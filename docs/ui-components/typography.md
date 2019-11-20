@@ -8,7 +8,7 @@ Code: Python
 Packages: Pillow, Tensorflow
 
 # CNN USPTO Analysis
-## Patent Density
+## Transfer Learning
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
 {: .fs-6 .fw-300 }
 
@@ -43,9 +43,13 @@ for root, dirs, files in os.walk(path, topdown=False):
                     print(e)
 ```
 
+Once we convert the files we can split the images into training and testing. Because the USPTO image set is so big, we can also take a smaller portion as a whole for our model. For the project I did a 70/30 split and used around 500 images total.
+
+
+### Annotation
 Download the [labelImg](https://github.com/tzutalin/labelImg) desktop app. This allows you to annotate images by placing bounding boxes around the items that you want to identify. It's helpful to look at the keepboard shortcuts.
 
-From my understanding there are a hanful of apps that assist with annotation, both for video and images. For the most part, if a company really needs images to get annotated, they hire it out as a mechanical turk job or a freelance agency that specializes in annotation.
+From my understanding there are a handful of apps that assist with annotation, both for video and images. For the most part, if a company really needs images to get annotated, they hire it out as a mechanical turk job or to an agency that specializes in annotation.
 
 LabelImg creates an XML file for each image, this is how the bounding box boundries for each image are created.
 
@@ -126,30 +130,6 @@ Example multi annotation XML file:
             <ymax>797</ymax>
         </bndbox>
     </object>
-    <object>
-        <name>72</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>442</xmin>
-            <ymin>876</ymin>
-            <xmax>504</xmax>
-            <ymax>955</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>40</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>404</xmin>
-            <ymin>1055</ymin>
-            <xmax>496</xmax>
-            <ymax>1143</ymax>
-        </bndbox>
-    </object>
     #
     # Repeat for each patent label figure.
     #
@@ -160,6 +140,7 @@ Example multi annotation XML file:
 
 Once we have our XML files we can pull that info and place it into a single organized csv file:
 
+The code below will recursively iterate through XML folders and pull the file name along with the information for each bounding box.
 ```
 # Credit goes to 'Copyright (c) 2017 Dat Tran' https://github.com/datitran/raccoon_dataset/blob/master/xml_to_csv.py.
 import os
@@ -210,11 +191,9 @@ Example CSV file output:
 |00000010.tif | 2560  |  3300  |   6   | 1784 | 464  | 1870 | 527  |
 |00000010.tif | 2560  |  3300  |   30  | 1246 | 893  | 1332 | 956  |
 
-Create .pbtxt file
-Our pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
+Next create a .pbtxt file. Pbtxt introduces the idea of protocol buffers. Protocol buffers(protobufs) are a means of serializing data. Serialization is just saying that we are te lling the computer to store or save some kind of information. For example, Python uses a Pickle file as a means of a common serialization format. Pickle is a binary format while JSON, XML, HTM, YAML, OData, and Protobufs are human readable serialization(aka data interchange) formats. Protobufs are a more universal way to serialize data and originates from Google. For more info refer to [Google Protocol Bufurs](https://developers.google.com/protocol-buffers/docs/overview). Protobufs are saved as .pb(binary) or .pbtxt(human readable) formats. These formats allow us to interchange information for effeciently as well as store information more compactly. Lastly, our .pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
 
-Here's a partial example of what a pbtxt will look:
-
+Here's a partial example of what a .pbtxt will look like:
 ```
 item {
     id: 1
@@ -222,21 +201,25 @@ item {
 }
 item {
     id: 2
-    name: '1'
+    name: 'Not a patent image'
 }
+# If patent labels were being used here would be a few examples:
 item {
-    id: 55
+    id: 3
     name: 'Patent number 10,198,1987'
 }
+item {
+    id: 4
+    name: 'A'
+}
+item {
+    id: 5
+    name: 'AB1'
+}
+# For each label there will be a unique id and a given name.
 ```
-
-Due to the number of total possible labels that we could have for our patent images it's best to create a script to turn our csv labels into our .pbtxt items. If we didn't do this we would have to write them the pbtxt by hand.
-
-First we create a txt file with all of the image labels:
-import pandas as pd
-
-# Grab Training labels
-
+Optional: if there are a lot of labels then a script can be written to transfer the csv info into a .pbtxt file format.
+Below is an example script that allows us to create a .pbtxt for a training/test set. The pbtxt can also be refered to as a labelmap.
 ```
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
@@ -244,7 +227,7 @@ file = file[3]
 end = '\n'
 s = ' '
 ID = 1
-name = 'training.txt'
+name = 'training.pbtxt'
 for x in file[1:]:
     out = ''
     out += 'item' + s + '{' + end
@@ -262,7 +245,7 @@ file = file[3]
 end = '\n'
 s = ' '
 ID = ID
-name = 'testing.txt'
+name = 'testing.pbtxt'
 for x in file[1:]:
     out = ''
     out += 'item' + s + '{' + end
@@ -273,73 +256,39 @@ for x in file[1:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-
-Then we use our if else statement using the .txt to create a our tfrecords file:
-
+Next we convert out labelmap to a tfrecord file which is a binary format for Tensorflow.
+Below, class_text_to_int() allows us to convert our text labels to integer values, which will then be converted to our tfrecord format.
 ```
-# generate_tfrecord if else statement
-# Testing
-filename = 'test_labels.csv'
-file = pd.read_csv(filename,header=None)
-file = file[3]
-end = '\n'
-s = ' '
-ID = 0
-name = 'function_test.txt'
-for x in file[2:]:
-    out = ''
-    out += 'elif row_label == \'' + str(x) + '\':' + end
-    out += s*4 + 'return ' + str(ID) + end
-    ID += 1
-    with open(name, 'a') as f:
-        f.write(out)
-```
-
-```
-# Training
-filename = 'train_labels.csv'
-file = pd.read_csv(filename,header=None)
-file = file[3]
-end = '\n'
-s = ' '
-ID = ID
-name = 'function_train.txt'
-for x in file[2:]:
-    out = ''
-    out += 'elif row_label == \'' + str(x) + '\':' + end
-    out += s*4 + 'return ' + str(ID) + end
-    ID += 1
-    with open(name, 'a') as f:
-        f.write(out)
-```
-
-```
-From the above code we can copy and paste the results into the 'class_text_to_int()' function below:¶
+Usage:
+  # From tensorflow/models/
+  # Create train data:
+  # python generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=train.record
+  # Create test data:
+  # python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record
+from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 import os
 import io
 import pandas as pd
 import tensorflow as tf
-import sys
-sys.path.append("../../models/research")
 
 from PIL import Image
 from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
-
 flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
 flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
-flags.DEFINE_string('label', '', 'Name of class label')
-flags.DEFINE_string('img_path', '', 'Path to images')
+flags.DEFINE_string('image_dir', '', 'Path to images')
 FLAGS = flags.FLAGS
 
+# --------- TO-DO replace this with labelmap ------------
 def class_text_to_int(row_label):
     if row_label == 'patent image':
         return 1
-    return None
-
+    else:
+        None
+# -------------------------------------------------------
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
     gb = df.groupby(group)
@@ -354,7 +303,6 @@ def create_tf_example(group, path):
 
     filename = group.filename.encode('utf8')
     image_format = b'jpg'
-    # check if the image format is matching with your images.
     xmins = []
     xmaxs = []
     ymins = []
@@ -385,9 +333,10 @@ def create_tf_example(group, path):
         'image/object/class/label': dataset_util.int64_list_feature(classes),
     }))
     return tf_example
+
 def main(_):
-    writer = tf._io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(os.getcwd(), FLAGS.img_path)
+    writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
+    path = os.path.join(FLAGS.image_dir)
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
     for group in grouped:
@@ -396,38 +345,38 @@ def main(_):
 
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-    print('Created TFRecords: {}'.format(output_path))
+    print('Successfully created the TFRecords: {}'.format(output_path))
 
 if __name__ == '__main__':
     tf.app.run()
 ```
+If there are a lot of labels below gives a script that will create the script for the if else statement in the class_text_to_int() function above. It takes each unique label and increments the return statement by one.
+```
+# generate_tfrecord
+# Testing
+filename = 'test_labels.csv' # Comment for training set
+# filename = 'train_labels.csv' # Uncomment for training set
+file = pd.read_csv(filename,header=None)
+file = file[3]
+end = '\n'
+s = ' '
+ID = 0
+name = 'function_test.txt' # Comment for training set
+# name = 'function_train.txt' # Uncomment for training set
+for x in file[2:]:
+    out = ''
+    out += 'elif row_label == \'' + str(x) + '\':' + end
+    out += s*4 + 'return ' + str(ID) + end
+    ID += 1
+    with open(name, 'a') as f:
+        f.write(out)
+```
 
-Create Config File
-Transfer Learning
+Tensorflow comes with a handful of models that are pretrained. The ssd_inception_v2_coco is used here because it is a model that has a good balance between speed and accuracy.
 
-Tensorflow comes with a handful of models that are pretrained. We're actually able to take any of the pretrained models, take the calculated weights for any of the given models, and use those weights to train the set of annotated images that we created.
-
-I decided to go with the 'ssd_inception_v2_coco' model simply because it seemed like a good middle ground for speed and accuracy.
-
-Once we have downloaded our pretrained model we can customize the config file to the number of files to files that we have creating up to this point:
-
-The Tensorflow Object Detection API uses protobuf files to configure the training and evaluation process.
-
-Protobuf files are a mechanism for serializing structured data.
-
-Config file can be split into 5 parts:
-
-Model configuration: Type of model to be trained.
-Train_config: parameters to be used to train model.
-Eval_config: determines set of metrics to be reported for eval.
-Train_input_config: defines dataset model should be trained on.
-Eval_input_config: dataset to be evaluated on, different than training input dataset.
-ssd uses a CNN.
-It has two hidden layers, both with an l2_regularizer, and Relu as an activation function.
-We have a batch size of 12. With an initial learning rate of .004.
-Number of steps to train is 12000.
-Number of steps for eval is 8000.
-
+We can specify our model parameters with the config file.
+Default parameters are two hidden layers, l2 regularization, Relu activation function, batch size 12, .004 learning rate, 12000 train steps, 8000 eval steps.
+Below is the config file.
 ```
 model {
   ssd {
@@ -605,7 +554,7 @@ eval_input_reader {
 ```
 
 Training our model
-once we have all of the above code we can run a few commands to run all of the code and train our model:
+once we have all of the above code we can run a few commands to train our model:
 
 ```
 # - Create xml to csv train data:
@@ -639,8 +588,8 @@ once we have all of the above code we can run a few commands to run all of the c
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test.record
 ```
 
-Below is an example output for our model. It shows an approximate loss of 2. Ideally we want a loss of around 1
-```Bash
+Below is example output for a training model. It shows an approximate loss of 2. Ideally we want a loss of around 1
+```
 INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
 INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
 INFO:tensorflow:global step 2749: loss = 2.1281 (25.003 sec/step)
@@ -656,18 +605,15 @@ INFO:tensorflow:global step 2751: loss = 1.9906 (11.665 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
-Once we run our model an event file will be created. This is where we can evaluate our model.
+
+Once we run our model an event file will be created. This is where we can evaluate our model on Tensorboard.
 
 ```
-# - Tensorboard Allows us to see different aspects of our data.
+# - Tensorboard Allows us to see different aspects of our data such loss, convergance, and steps.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
-
-Object Detection
-Object detection inference - This will walk you through a pre-trained model to detect patent objects in an image.
-This notebook is using a process known as transfer learning; instead of training our own model from scratch, we use the weights from a pre-trained model.
-This allows us to save time, but may come at a cost to accuracy.
-
+Now we can test our model.
+Needed libraries:
 ```
 import os
 import sys
@@ -684,21 +630,16 @@ from collections import defaultdict
 from utils import label_map_util # Object detection module import
 from io import StringIO
 from PIL import Image
-
 %matplotlib inline
 ```
 
-We use an "SSD with Mobilenet" model:
-
 ```
-MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph' # Download model.
+Set paths for labels and model location.
+MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph'
 PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph.pb' # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_LABELS = os.path.join('/Users/home/Documents/machine_learning/models-master/models/research/object_detection/data/', 'object-detection.pbtxt') # Adds label for each box.
-```
 
-Load frozen Tensorflow model into memory:
-
-```
+# Load Tensorflow model:
 detection_graph = tf.Graph()
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
@@ -706,16 +647,11 @@ with detection_graph.as_default():
     serialized_graph = fid.read()
     od_graph_def.ParseFromString(serialized_graph)
     tf.import_graph_def(od_graph_def, name='')
-```
 
-Load label map:
-Label maps map indices to category names, so that when our convolution network predicts 1, we know that this corresponds to patent image.
-
-```
+# Load label map:
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
-```
 
-```
+# Loads image into usable format, numpy array.
 def load_image_into_numpy_array(image):
     # Function supports only grayscale images
     last_axis = -1
@@ -729,14 +665,11 @@ def load_image_into_numpy_array(image):
 ```
 
 Detection:
-
 ```
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
 IMAGE_SIZE = (25, 20)
-```
 
-```
 def run_inference_for_single_image(image, graph):
     with graph.as_default():
         with tf.Session() as sess:
@@ -779,17 +712,7 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
-
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)
-
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test2.png)
-
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test3.png)
-
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test4.png)
-
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test5.png)
-
+Run test and view any number of test images.
 ```
 for image_path in TEST_IMAGE_PATHS:
     image = Image.open(image_path)
@@ -810,9 +733,9 @@ for image_path in TEST_IMAGE_PATHS:
     plt.imshow(image_np)
 ```
 
+Example test image:
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)
+
 Next steps:
-- Train object detection model longer and with more images to get loss down to an aproximated 1.
 - Train new object detection model to detect image figure numbers.
 - Parse patent text data to tokenize and formalize patent image data and image figures data.
-- Match formalized text data with image and image figures.
-- Create user-interface.
