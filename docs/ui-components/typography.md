@@ -4,40 +4,23 @@ title: Typography
 parent: UI Components
 nav_order: 1
 ---
+Code: Python
+Packages: Pillow, Tensorflow
 
-# USPTO Analysis
+# CNN USPTO Analysis
 ## Patent Density
-Patents are inherently dense. Typically, the information may be understood with enough time, or preexisting domain knowledge.
-Patent breakdown
-{: .fs-6 .fw-300 }
-
-With each patent comes a set of pages; title page, description pages, graph pages, etc. Not all, but a lot of patents, come with a patent drawing/figure on the front page. Within that image, there are numbers to label each part of the figure; the aforementioned description pages explain what each image/figure is and what each given label on the image represents.
-{: .fs-6 .fw-300 }
-
-## Purpose
-Use machine learning and other data science methods to identify each image label, match that label with its' corresponding description, and convert the description to laymens terms as well; as well as condense that information.
-{: .fs-6 .fw-300 }
-
-## Extra steps
-After this is done an additional step may be taken to take the condensed descriptions and place them next to each figure label. After the descriptions are placed, a search engine/recommendation engine may be created to allow for quicker access.
-{: .fs-6 .fw-300 }
-
-## Benefit
-An individual can save time by searching and finding relavant patents based on either laymens terms or domain jargon. They can then gain a quicker oversite by receiving only the images with their descriptions; with the option of looking at the full paper.
-{: .fs-6 .fw-300 }
-
-## Why
-This project has grown out of a personal desire to understand patents, and feeling overwhelmed by the amount of data that there is. The hope is to make patents less of a black blox, and more of an opportunity for myself and for others.
+Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
 {: .fs-6 .fw-300 }
 
 Follow the docs to install Tensorflow.
 [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)
 
-Download Images.
+Download USPTO patent images.
 [USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
 
-Uspto images came in a tiff format. Tensorflow doesn't support this so we need to convert it to a format such as jpg.
+USPTO images come in a tiff format. Tensorflow doesn't support this so we need to convert it to another format such as JPG.
 
+After unzipping the USPTO images, the code below will run through all folders recursively and change any .tif to a .jpg. Run the code in the upper most directory.
 ```
 import os
 from PIL import Image # Pip install PIL
@@ -60,11 +43,13 @@ for root, dirs, files in os.walk(path, topdown=False):
                     print(e)
 ```
 
-Use [labelImg](https://github.com/tzutalin/labelImg) to annotate images by placing bounding boxes around the items that you want to identify.
-This creates an xml file for each image that has the bounding box boundries for each image and its item.
+Download the [labelImg](https://github.com/tzutalin/labelImg) desktop app. This allows you to annotate images by placing bounding boxes around the items that you want to identify. It's helpful to look at the keepboard shortcuts.
 
-Example single annotation XML file format:
+From my understanding there are a hanful of apps that assist with annotation, both for video and images. For the most part, if a company really needs images to get annotated, they hire it out as a mechanical turk job or a freelance agency that specializes in annotation.
 
+LabelImg creates an XML file for each image, this is how the bounding box boundries for each image are created.
+
+Example single annotation XML file:
 ```
 <annotation>
     # Folder name
@@ -95,12 +80,17 @@ Example single annotation XML file format:
 
 ![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
 
-Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
+Let's get a little bit more granular. Below is an image annotation that annotates the patents figure labels, i.e part numbers and letters.
 
-### Example multi-annotation XML file format:
-### Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels:
+This part was something that started to become really time consuming. Each patent image has anywhere from 5 - 50 annotations. The consistency of the patent labeling isn't 100% consistent, i.e. some patents may use a simple A., B., C., while other may use AB1, AB2, AB3. Because of this the number of patents needed to be annotated is a lot higher. From what I understand, the general heuristic is that for each given unique character there should be around 100 annotations for that same character. This heuristic is based off of OpenCV examples using character recognition on images like street signs and home addresses. Given that the format for patent text is mostly all the same, with differing fonts depending on how old the patents are, as long as the patents are within the past 10 or so years the number of annotations should probably be less than half for each character. That means for each character, the model should be able to work with 25-50 annotations -- this a total guess.
 
+One level of complexity that this adds, is that each image has to be organized into its own folder. This creates an extra layer of could needed to sort through each file recursively.  Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels.
 
+At this point in the project I decided to just keep it simple and only conduct object detection on the patent image as a whole instead of for all patent labels.
+
+For future reference, I think that the next alternative approach will be to look at pre-trained character recognition models.
+
+Example multi annotation XML file:
 ```
 <annotation>
     <folder>train</folder>
@@ -160,303 +150,18 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
             <ymax>1143</ymax>
         </bndbox>
     </object>
-    <object>
-        <name>55</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>400</xmin>
-            <ymin>1172</ymin>
-            <xmax>467</xmax>
-            <ymax>1251</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>50</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>446</xmin>
-            <ymin>1289</ymin>
-            <xmax>504</xmax>
-            <ymax>1372</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>25</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>417</xmin>
-            <ymin>1797</ymin>
-            <xmax>492</xmax>
-            <ymax>1901</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>25</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>496</xmin>
-            <ymin>2055</ymin>
-            <xmax>563</xmax>
-            <ymax>2143</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>10</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>579</xmin>
-            <ymin>2455</ymin>
-            <xmax>638</xmax>
-            <ymax>2564</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>45</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>804</xmin>
-            <ymin>905</ymin>
-            <xmax>867</xmax>
-            <ymax>1001</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>15</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>929</xmin>
-            <ymin>880</ymin>
-            <xmax>1000</xmax>
-            <ymax>976</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>42</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>896</xmin>
-            <ymin>1210</ymin>
-            <xmax>971</xmax>
-            <ymax>1297</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>30</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>884</xmin>
-            <ymin>1510</ymin>
-            <xmax>950</xmax>
-            <ymax>1605</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>30</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1017</xmin>
-            <ymin>1989</ymin>
-            <xmax>1084</xmax>
-            <ymax>2072</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>45</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1584</xmin>
-            <ymin>1660</ymin>
-            <xmax>1646</xmax>
-            <ymax>1743</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>10</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1842</xmin>
-            <ymin>1564</ymin>
-            <xmax>1925</xmax>
-            <ymax>1660</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>72</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1904</xmin>
-            <ymin>1864</ymin>
-            <xmax>1975</xmax>
-            <ymax>1989</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>40</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1809</xmin>
-            <ymin>1993</ymin>
-            <xmax>1875</xmax>
-            <ymax>2080</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>55</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1867</xmin>
-            <ymin>2110</ymin>
-            <xmax>1925</xmax>
-            <ymax>2185</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>50</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1754</xmin>
-            <ymin>2276</ymin>
-            <xmax>1834</xmax>
-            <ymax>2364</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>30</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1500</xmin>
-            <ymin>2164</ymin>
-            <xmax>1563</xmax>
-            <ymax>2251</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>30</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1142</xmin>
-            <ymin>2235</ymin>
-            <xmax>1196</xmax>
-            <ymax>2310</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>10</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1659</xmin>
-            <ymin>2710</ymin>
-            <xmax>1725</xmax>
-            <ymax>2785</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>Fig. 4</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>2046</xmin>
-            <ymin>1630</ymin>
-            <xmax>2146</xmax>
-            <ymax>1818</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>U.S. Patent</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>321</xmin>
-            <ymin>193</ymin>
-            <xmax>717</xmax>
-            <ymax>305</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>Jan. 1, 2019</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>842</xmin>
-            <ymin>214</ymin>
-            <xmax>1134</xmax>
-            <ymax>297</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>Sheet 6 of 6</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1238</xmin>
-            <ymin>205</ymin>
-            <xmax>1538</xmax>
-            <ymax>305</ymax>
-        </bndbox>
-    </object>
-    <object>
-        <name>US 10,165,764 B2</name>
-        <pose>Unspecified</pose>
-        <truncated>0</truncated>
-        <difficult>0</difficult>
-        <bndbox>
-            <xmin>1729</xmin>
-            <ymin>189</ymin>
-            <xmax>2229</xmax>
-            <ymax>310</ymax>
-        </bndbox>
-    </object>
+    #
+    # Repeat for each patent label figure.
+    #
 </annotation>
 ```
 
 ![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/multi_annotation.png)
 
-Organize image information into single csv.
-Once we have our xml files we can pull the info and place it into a single organized csv file:
+Once we have our XML files we can pull that info and place it into a single organized csv file:
 
 ```
+# Credit goes to 'Copyright (c) 2017 Dat Tran' https://github.com/datitran/raccoon_dataset/blob/master/xml_to_csv.py.
 import os
 import glob
 import pandas as pd
@@ -495,6 +200,15 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+Example CSV file output:
+
+|  filename   | width | height | class | xmin | ymin | xmax | ymax |
+|:-----------:|:-----:|:------:|:-----:|:----:|:----:|:----:|:----:|
+|00000010.tif | 2560  |  3300  |   56  | 625  | 1595 | 711  | 1658 |
+|00000010.tif | 2560  |  3300  |   8   | 1213 | 465  | 1299 | 528  |
+|00000010.tif | 2560  |  3300  |   6   | 1784 | 464  | 1870 | 527  |
+|00000010.tif | 2560  |  3300  |   30  | 1246 | 893  | 1332 | 956  |
 
 Create .pbtxt file
 Our pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
