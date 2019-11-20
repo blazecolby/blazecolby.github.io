@@ -7,16 +7,19 @@ nav_order: 1
 #### Code: Python
 #### Main packages: Pillow, Tensorflow, Protobuf, Tensorboard
 #### Read Time: ~ 15-30 min
-
+<br />
+<br />
 # CNN USPTO Analysis
 ### Transfer Learning
 
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
-
+<br />
+<br />
 To get Started:<br />
 - Follow the docs to install Tensorflow. [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)<br />
-- Download USPTO patent images. [USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
+- Download USPTO patent images. Select one tar file. The smalled size is ~ 6GB. [USPTO Images](https://bulkdata.uspto.gov/data/patent/grant/yellowbook/2019/)
 
+Convert images<br />
 USPTO images come in a tiff format. Tensorflow doesn't support this so we need to convert it to another format such as JPG.
 After unzipping the USPTO images, the code below will run through all folders recursively and change any .tif to a .jpg. Run the code in the upper most directory.
 ```
@@ -40,13 +43,16 @@ for root, dirs, files in os.walk(path, topdown=False):
                 except Exception as e:
                     print(e)
 ```
-
+Train/test split<br />
 Once we convert the files we can split the images into training and testing. Because the USPTO image set is so big, we can also take a smaller portion as a whole for our model. For the project I did a 70/30 split and used around 500 images total.
 
-### Annotation
-Download the [labelImg](https://github.com/tzutalin/labelImg) desktop app. This allows you to annotate images by placing bounding boxes around the items that you want to identify. It's helpful to look at the keepboard shortcuts.
+Annotate<br />
+Download the '[labelImg](https://github.com/tzutalin/labelImg)' desktop app.
+LabelImg annotates images by placing bounding boxes around the items that you want to identify.
 
-From my understanding there are a handful of apps that assist with annotation, both for video and images. For the most part, if a company really needs images to get annotated, they hire it out as a mechanical turk job or to an agency that specializes in annotation.
+NOTE: It's helpful to look at the keyboard shortcuts for lableImg so you can annotate more quickly.
+
+There are a handful of apps that assist with annotation, both video and images. For the most part, if a company really needs images to get annotated, they'll hire it out as a mechanical turk job or to an agency that specializes in annotation.
 
 LabelImg creates an XML file for each image, this is how the bounding box boundries for each image are created.
 
@@ -80,15 +86,17 @@ Example single annotation XML file:
 ```
 ![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
 
+Granular<br />
 Let's get a little bit more granular. Below is an image annotation that annotates the patents figure labels, i.e part numbers and letters.
 
 This part of the project was something that started to become really time consuming. Each patent image has anywhere from 5 - 50 annotations. The consistency of the patent labeling isn't 100% consistent, i.e. some patents may use a simple A., B., C., while other may use AB1, AB2, AB3. Because of this the number of patents needed to be annotated is a lot higher. From what I understand, the general heuristic is that for each given unique character there should be around 100 annotations for that same character. This heuristic is based off of OpenCV examples using character recognition on images like street signs and home addresses. Given that the format for patent text is mostly all the same, with differing fonts depending on how old the patents are, as long as the patents are within the past 10 or so years the number of annotations should probably be less than half for each character. That means for each character, the model should be able to work with 25-50 annotations -- this a total guess.
 
 One level of complexity that this adds, is that each image has to be organized into its own folder. This creates an extra layer of could needed to sort through each file recursively.  Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels.
 
+Moving on<br />
 At this point in the project I decided to just keep it simple and only conduct object detection on the patent image as a whole instead of for all patent labels.
 
-For future reference, I think that the next alternative approach will be to look at pre-trained character recognition models.
+NOTE: For future reference, I think that the next alternative approach will be to look at pre-trained character recognition models.
 
 Example multi-annotation XML file:
 ```
@@ -134,8 +142,9 @@ Example multi-annotation XML file:
 
 ![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/multi_annotation.png)
 
-Once we have our XML files we can pull that info and place it into a single organized csv file.<br />
-The code below will recursively iterate through XML folders and pull the file name along with the information for each bounding box.
+Once we have the XML files we can pull that info and place it into a single organized csv file.<br />
+The code below will recursively iterate through folders and pull the file name along with the XML info for each bounding box.
+
 ```
 # Credit goes to 'Copyright (c) 2017 Dat Tran' https://github.com/datitran/raccoon_dataset/blob/master/xml_to_csv.py.
 import os
@@ -186,6 +195,7 @@ Example CSV file output:
 |00000010.tif | 2560  |  3300  |   6   | 1784 | 464  | 1870 | 527  |
 |00000010.tif | 2560  |  3300  |   30  | 1246 | 893  | 1332 | 956  |
 
+Protobuf<br />
 Next create a .pbtxt file. Pbtxt introduces the idea of protocol buffers. Protocol buffers(protobufs) are a means of serializing data. Serialization is just saying that we are te lling the computer to store or save some kind of information. For example, Python uses a Pickle file as a means of a common serialization format. Pickle is a binary format while JSON, XML, HTM, YAML, OData, and Protobufs are human readable serialization(aka data interchange) formats. Protobufs are a more universal way to serialize data and originates from Google. For more info refer to [Google Protocol Bufurs](https://developers.google.com/protocol-buffers/docs/overview). Protobufs are saved as .pb(binary) or .pbtxt(human readable) formats. These formats allow us to interchange information for effeciently as well as store information more compactly. Lastly, our .pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
 
 Here's a partial example of what a .pbtxt will look like:
@@ -213,8 +223,10 @@ item {
 }
 # For each label there will be a unique id and a given name.
 ```
-Optional: if there are a lot of labels then a script can be written to transfer the csv info into a .pbtxt file format.<br />
+
+Optional: If there are a lot of labels then a script can be written to transfer the csv info into a .pbtxt file format.<br />
 Below is an example script that allows us to create a .pbtxt for a training/test set. The pbtxt can also be refered to as a labelmap.
+
 ```
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
@@ -251,8 +263,11 @@ for x in file[1:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-Next we convert out labelmap to a tfrecord file which is a binary format for Tensorflow.<br />
+
+Moving on<br />
+Next we convert the labelmap to a tfrecord file which is a binary format for Tensorflow.<br />
 Below, class_text_to_int() allows us to convert our text labels to integer values, which will then be converted to our tfrecord format.
+
 ```
 Usage:
   # From tensorflow/models/
@@ -345,7 +360,10 @@ def main(_):
 if __name__ == '__main__':
     tf.app.run()
 ```
-If there are a lot of labels below gives a script that will create the script for the if else statement in the class_text_to_int() function above. It takes each unique label and increments the return statement by one.
+
+If there are a lot of labels then use the below script which will create the script for the if else statement in the above class_text_to_int().<br />
+It takes each unique label and increments the 'return' statement by one.
+
 ```
 # generate_tfrecord
 # Testing
@@ -366,7 +384,12 @@ for x in file[2:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-Tensorflow comes with a handful of models that are pretrained. The ssd_inception_v2_coco is used here because it is a model that has a good balance between speed and accuracy.
+
+Pretrained models<br />
+Tensorflow comes with a handful of models that are pretrained. The ssd_inception_v2 is used here because it is a model that has a good balance between speed and accuracy.
+
+NOTE: Other models can be viewed [HERE](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).<br />
+NOTE: Corresponding config files can be viewed [HERE](https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs).
 
 We can specify our model parameters with the config file.<br />
 Default parameters are two hidden layers, l2 regularization, Relu activation function, batch size 12, .004 learning rate, 12000 train steps, 8000 eval steps.<br />
@@ -546,8 +569,10 @@ eval_input_reader {
   }
 }
 ```
-Training our model<br />
+
+Training the model<br />
 Once we have all of the above code we can run a few commands to train our model.
+
 ```
 # - Create xml to csv train data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
