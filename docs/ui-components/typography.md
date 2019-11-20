@@ -1055,7 +1055,7 @@ def run_inference_for_single_image(image, graph):
 ![image](./docs/images/test2.png)
 ![image](./docs/images/test3.png)
 ![image](test4.png)
-![image](https://blazecolby.github.io/docs/ui-components/typography/test5.png)
+![image](https://blazecolby.github.io/docs/ui-components/docs/images/test5.png)
 
 ```Bash
 for image_path in TEST_IMAGE_PATHS:
