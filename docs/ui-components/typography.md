@@ -577,64 +577,38 @@ eval_input_reader {
 <br />
 Training the model
 
-Once we have all of the above code we can run a few commands to train our model.
+Once we have all of the above code we can run a few commands to train our model.<br />
+
+Xml to csv -- run for both train and test sets.
 ```
 # - Create xml to csv train data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
--i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
--o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv
+-i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \ # /test
+-o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv #test_labels.csv
 ```
-<br />
-```
-# - Create xml to csv test data:
-! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
--i /Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
--o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv
-```
-<br />
+Create TFRecord for both train and test sets.
 ```
 # - Create record train data:
 ! \
 /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
 --label=patent \
---csv_input=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv\
---img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
---output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train.record
+--csv_input=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv\ # test_labels.csv
+--img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/train \ # test
+--output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train.record # test.record
 ```
-<br />
-```
-# - Create record test data:
-! /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
---label=patent \
---csv_input=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv \
---img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
---output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test.record
-```
-<br />
 Below is example output for a training model. It shows an approximate loss of 2. Ideally we want a loss of around 1
 ```
-INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
-INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
-INFO:tensorflow:global step 2749: loss = 2.1281 (25.003 sec/step)
-INFO:tensorflow:global step 2749: loss = 2.1281 (25.003 sec/step)
-INFO:tensorflow:global_step/sec: 0.0188623
 INFO:tensorflow:global_step/sec: 0.0188623
 INFO:tensorflow:Recording summary at step 2749.
-INFO:tensorflow:Recording summary at step 2749.
 INFO:tensorflow:global step 2750: loss = 2.0793 (20.090 sec/step)
-INFO:tensorflow:global step 2750: loss = 2.0793 (20.090 sec/step)
-INFO:tensorflow:global step 2751: loss = 1.9906 (11.665 sec/step)
-INFO:tensorflow:global step 2751: loss = 1.9906 (11.665 sec/step)
-INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
 <br />
 Once we run our model an event file will be created. This is where we can evaluate our model on Tensorboard.
 ```
-# - Tensorboard Allows us to see different aspects of our data such loss, convergance, and steps.
+# - Tensorboard Allows us to see different aspects of our data such loss, convergance, and steps taken.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
-<br />
 Now we can test our model.<br />
 ```
 # Needed libraries --
@@ -655,7 +629,7 @@ from io import StringIO
 from PIL import Image
 %matplotlib inline
 ```
-<br />
+Load model, labelmap, and convert images to numpy array.
 ```
 Set paths for labels and model location.
 MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph'
@@ -686,7 +660,7 @@ def load_image_into_numpy_array(image):
     assert training_image.shape[-1] == 3
     return training_image
 ```
-<br />
+Create test function.
 ```
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
@@ -734,8 +708,7 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
-<br />
-Run test and view any number of test images.
+Run test and view image results.
 ```
 for image_path in TEST_IMAGE_PATHS:
     image = Image.open(image_path)
@@ -755,7 +728,7 @@ for image_path in TEST_IMAGE_PATHS:
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
 ```
-<br />
+
 Example test image:
 
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)<br />
