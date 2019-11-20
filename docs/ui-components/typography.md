@@ -65,7 +65,7 @@ This creates an xml file for each image that has the bounding box boundries for 
 
 Example single annotation XML file format:
 
-```Python
+```
 <annotation>
     # Folder name
     <folder>1</folder>
@@ -104,7 +104,7 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
 ### Example multi-annotation XML file format:
 ### Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels:
 
-```Python
+```
 <annotation>
     <folder>train</folder>
     <filename>1073.jpg</filename>
@@ -459,7 +459,7 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
 Organize image information into single csv.
 Once we have our xml files we can pull the info and place it into a single organized csv file:
 
-```Python
+```
 import os
 import glob
 import pandas as pd
@@ -504,7 +504,7 @@ Our pbtxt is a place where we can store all of our annotation labels, it's like 
 
 Here's a partial example of what a pbtxt will look:
 
-```Python
+```
 item {
     id: 1
     name: 'patent image'
@@ -526,7 +526,7 @@ import pandas as pd
 
 # Grab Training labels
 
-```Python
+```
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
 file = file[3]
@@ -565,7 +565,7 @@ for x in file[1:]:
 
 Then we use our if else statement using the .txt to create a our tfrecords file:
 
-```Python
+```
 # generate_tfrecord if else statement
 # Testing
 filename = 'test_labels.csv'
@@ -584,7 +584,7 @@ for x in file[2:]:
         f.write(out)
 ```
 
-```Python
+```
 # Training
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
@@ -602,7 +602,7 @@ for x in file[2:]:
         f.write(out)
 ```
 
-```Python
+```
 From the above code we can copy and paste the results into the 'class_text_to_int()' function below:¶
 from __future__ import print_function
 from __future__ import absolute_import
@@ -675,7 +675,7 @@ def create_tf_example(group, path):
     }))
     return tf_example
 def main(_):
-    writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
+    writer = tf._io.TFRecordWriter(FLAGS.output_path)
     path = os.path.join(os.getcwd(), FLAGS.img_path)
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
@@ -717,7 +717,7 @@ We have a batch size of 12. With an initial learning rate of .004.
 Number of steps to train is 12000.
 Number of steps for eval is 8000.
 
-```Python
+```
 model {
   ssd {
     num_classes: 1 # this is the number of different labels that we came across when annotating our patent images.
@@ -896,32 +896,32 @@ eval_input_reader {
 Training our model
 once we have all of the above code we can run a few commands to run all of the code and train our model:
 
-```Python
+```
 # - Create xml to csv train data:
-!python /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
+! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv
 ```
 
-```Python
+```
 # - Create xml to csv test data:
-!python /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
+! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv
 ```
 
-```Python
+```
 # - Create record train data:
-!python \
+! \
 /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
 --label=patent \
 --csv_input=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv\
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train.record
 ```
-```Python
+```
 # - Create record test data:
-!python /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
+! /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
 --label=patent \
 --csv_input=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv \
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
@@ -947,7 +947,7 @@ INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
 Once we run our model an event file will be created. This is where we can evaluate our model.
 
-```Python
+```
 # - Tensorboard Allows us to see different aspects of our data.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
@@ -957,7 +957,7 @@ Object detection inference - This will walk you through a pre-trained model to d
 This notebook is using a process known as transfer learning; instead of training our own model from scratch, we use the weights from a pre-trained model.
 This allows us to save time, but may come at a cost to accuracy.
 
-```Python
+```
 import os
 import sys
 import tarfile
@@ -979,7 +979,7 @@ from PIL import Image
 
 We use an "SSD with Mobilenet" model:
 
-```Python
+```
 MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph' # Download model.
 PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph.pb' # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_LABELS = os.path.join('/Users/home/Documents/machine_learning/models-master/models/research/object_detection/data/', 'object-detection.pbtxt') # Adds label for each box.
@@ -987,7 +987,7 @@ PATH_TO_LABELS = os.path.join('/Users/home/Documents/machine_learning/models-mas
 
 Load frozen Tensorflow model into memory:
 
-```Python
+```
 detection_graph = tf.Graph()
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
@@ -1000,11 +1000,11 @@ with detection_graph.as_default():
 Load label map:
 Label maps map indices to category names, so that when our convolution network predicts 1, we know that this corresponds to patent image.
 
-```Python
+```
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 ```
 
-```Python
+```
 def load_image_into_numpy_array(image):
     # Function supports only grayscale images
     last_axis = -1
@@ -1019,13 +1019,13 @@ def load_image_into_numpy_array(image):
 
 Detection:
 
-```Python
+```
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
 IMAGE_SIZE = (25, 20)
 ```
 
-```Python
+```
 def run_inference_for_single_image(image, graph):
     with graph.as_default():
         with tf.Session() as sess:
@@ -1080,7 +1080,7 @@ def run_inference_for_single_image(image, graph):
 
 <!-- https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/ -->
 
-```Python
+```
 for image_path in TEST_IMAGE_PATHS:
     image = Image.open(image_path)
     # Array representation of image will be used later to prepare result image w/ boxes &* labels.
