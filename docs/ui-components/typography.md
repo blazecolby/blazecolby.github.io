@@ -4,14 +4,12 @@ title: Typography
 parent: UI Components
 nav_order: 1
 ---
-
 #### Code: Python
 #### Packages: Pillow, Tensorflow
 
 # CNN USPTO Analysis
-## Transfer Learning
+## - Transfer Learning
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
-{: .fs-6 .fw-300 }
 
 Follow the docs to install Tensorflow.
 [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)
