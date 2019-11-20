@@ -5,9 +5,8 @@ parent: UI Components
 nav_order: 1
 ---
 
-Code: Python
-
-Packages: Pillow, Tensorflow
+#### Code: Python
+#### Packages: Pillow, Tensorflow
 
 # CNN USPTO Analysis
 ## Transfer Learning
