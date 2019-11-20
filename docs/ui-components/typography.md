@@ -30,10 +30,6 @@ An individual can save time by searching and finding relavant patents based on e
 This project has grown out of a personal desire to understand patents, and feeling overwhelmed by the amount of data that there is. The hope is to make patents less of a black blox, and more of an opportunity for myself and for others.
 {: .fs-6 .fw-300 }
 
-## Limitations
-Due to limited time, this presentation/final product for this bootcamp will only be a part of the overall project.
-Prepare and organize your workspace¶
-
 Follow the docs to install Tensorflow.
 [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)
 
@@ -65,8 +61,8 @@ for root, dirs, files in os.walk(path, topdown=False):
                     print(e)
 ```
 
-Use [labelImg](https://github.com/tzutalin/labelImg) to annotate images by placing bounding boxes around the items that you want to identify.¶
-This creates an xml file for each image that has the bounding box boundries for each image and its' item.¶
+Use [labelImg](https://github.com/tzutalin/labelImg) to annotate images by placing bounding boxes around the items that you want to identify.
+This creates an xml file for each image that has the bounding box boundries for each image and its item.
 
 Example single annotation XML file format:
 
