@@ -4,7 +4,9 @@ title: Typography
 parent: UI Components
 nav_order: 1
 ---
+
 Code: Python
+
 Packages: Pillow, Tensorflow
 
 # CNN USPTO Analysis
@@ -86,7 +88,7 @@ Example single annotation XML file:
 
 Let's get a little bit more granular. Below is an image annotation that annotates the patents figure labels, i.e part numbers and letters.
 
-This part was something that started to become really time consuming. Each patent image has anywhere from 5 - 50 annotations. The consistency of the patent labeling isn't 100% consistent, i.e. some patents may use a simple A., B., C., while other may use AB1, AB2, AB3. Because of this the number of patents needed to be annotated is a lot higher. From what I understand, the general heuristic is that for each given unique character there should be around 100 annotations for that same character. This heuristic is based off of OpenCV examples using character recognition on images like street signs and home addresses. Given that the format for patent text is mostly all the same, with differing fonts depending on how old the patents are, as long as the patents are within the past 10 or so years the number of annotations should probably be less than half for each character. That means for each character, the model should be able to work with 25-50 annotations -- this a total guess.
+This part of the project was something that started to become really time consuming. Each patent image has anywhere from 5 - 50 annotations. The consistency of the patent labeling isn't 100% consistent, i.e. some patents may use a simple A., B., C., while other may use AB1, AB2, AB3. Because of this the number of patents needed to be annotated is a lot higher. From what I understand, the general heuristic is that for each given unique character there should be around 100 annotations for that same character. This heuristic is based off of OpenCV examples using character recognition on images like street signs and home addresses. Given that the format for patent text is mostly all the same, with differing fonts depending on how old the patents are, as long as the patents are within the past 10 or so years the number of annotations should probably be less than half for each character. That means for each character, the model should be able to work with 25-50 annotations -- this a total guess.
 
 One level of complexity that this adds, is that each image has to be organized into its own folder. This creates an extra layer of could needed to sort through each file recursively.  Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels.
 
@@ -94,7 +96,7 @@ At this point in the project I decided to just keep it simple and only conduct o
 
 For future reference, I think that the next alternative approach will be to look at pre-trained character recognition models.
 
-Example multi annotation XML file:
+Example multi-annotation XML file:
 ```
 <annotation>
     <folder>train</folder>
