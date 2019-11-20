@@ -1055,7 +1055,7 @@ def run_inference_for_single_image(image, graph):
 ![image](./docs/images/test2.png)
 ![image](./docs/images/test3.png)
 ![image](./docs/images/test4.png)
-![image](./docs/images/test5.png)
+![image](/images/test5.png)
 
 ```Bash
 for image_path in TEST_IMAGE_PATHS:
