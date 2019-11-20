@@ -5,7 +5,8 @@ parent: UI Components
 nav_order: 1
 ---
 #### Code: Python
-#### Packages: Pillow, Tensorflow
+#### Main packages: Pillow, Tensorflow, Protobuf, Tensorboard
+#### Read Time: ~ 15-30 min
 
 # CNN USPTO Analysis
 ### Transfer Learning
