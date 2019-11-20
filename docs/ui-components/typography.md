@@ -93,12 +93,16 @@ Example single annotation XML file format:
 </annotation>
 ```
 
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/single_annotation.png)
+<!-- ![image]() -->
+
+<img src='https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/single_annotation.png'/>
+
 
 Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
 
 ### Example multi-annotation XML file format:
 ### Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels:
+
 
 ```
 <annotation>
