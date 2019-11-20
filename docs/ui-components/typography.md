@@ -11,8 +11,7 @@ nav_order: 1
 <br />
 # CNN USPTO Analysis
 ### Transfer Learning
-&nbsp
-&nbsp
+
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
 <br />
 <br />
@@ -44,6 +43,7 @@ for root, dirs, files in os.walk(path, topdown=False):
                 except Exception as e:
                     print(e)
 ```
+<br />
 Train/test split<br />
 Once we convert the files we can split the images into training and testing. Because the USPTO image set is so big, we can also take a smaller portion as a whole for our model. For the project I did a 70/30 split and used around 500 images total.
 
@@ -85,6 +85,7 @@ Example single annotation XML file:
     </object>
 </annotation>
 ```
+<br />
 ![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
 
 Granular<br />
@@ -140,7 +141,7 @@ Example multi-annotation XML file:
     #
 </annotation>
 ```
-
+<br />
 ![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/multi_annotation.png)
 
 Once we have the XML files we can pull that info and place it into a single organized csv file.<br />
@@ -186,7 +187,7 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-
+<br />
 Example CSV file output:
 
 |  filename   | width | height | class | xmin | ymin | xmax | ymax |
@@ -195,7 +196,7 @@ Example CSV file output:
 |00000010.tif | 2560  |  3300  |   8   | 1213 | 465  | 1299 | 528  |
 |00000010.tif | 2560  |  3300  |   6   | 1784 | 464  | 1870 | 527  |
 |00000010.tif | 2560  |  3300  |   30  | 1246 | 893  | 1332 | 956  |
-
+<br />
 Protobuf<br />
 Next create a .pbtxt file. Pbtxt introduces the idea of protocol buffers. Protocol buffers(protobufs) are a means of serializing data. Serialization is just saying that we are te lling the computer to store or save some kind of information. For example, Python uses a Pickle file as a means of a common serialization format. Pickle is a binary format while JSON, XML, HTM, YAML, OData, and Protobufs are human readable serialization(aka data interchange) formats. Protobufs are a more universal way to serialize data and originates from Google. For more info refer to [Google Protocol Bufurs](https://developers.google.com/protocol-buffers/docs/overview). Protobufs are saved as .pb(binary) or .pbtxt(human readable) formats. These formats allow us to interchange information for effeciently as well as store information more compactly. Lastly, our .pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
 
@@ -264,7 +265,7 @@ for x in file[1:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-
+<br />
 Moving on<br />
 Next we convert the labelmap to a tfrecord file which is a binary format for Tensorflow.<br />
 Below, class_text_to_int() allows us to convert our text labels to integer values, which will then be converted to our tfrecord format.
@@ -361,7 +362,7 @@ def main(_):
 if __name__ == '__main__':
     tf.app.run()
 ```
-
+<br />
 If there are a lot of labels then use the below script which will create the script for the if else statement in the above class_text_to_int().<br />
 It takes each unique label and increments the 'return' statement by one.
 
@@ -385,7 +386,7 @@ for x in file[2:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-
+<br />
 Pretrained models<br />
 Tensorflow comes with a handful of models that are pretrained. The ssd_inception_v2 is used here because it is a model that has a good balance between speed and accuracy.
 
@@ -570,7 +571,7 @@ eval_input_reader {
   }
 }
 ```
-
+<br />
 Training the model<br />
 Once we have all of the above code we can run a few commands to train our model.
 
@@ -580,12 +581,14 @@ Once we have all of the above code we can run a few commands to train our model.
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv
 ```
+<br />
 ```
 # - Create xml to csv test data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv
 ```
+<br />
 ```
 # - Create record train data:
 ! \
@@ -595,6 +598,7 @@ Once we have all of the above code we can run a few commands to train our model.
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train.record
 ```
+<br />
 ```
 # - Create record test data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
@@ -603,6 +607,7 @@ Once we have all of the above code we can run a few commands to train our model.
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test.record
 ```
+<br />
 Below is example output for a training model. It shows an approximate loss of 2. Ideally we want a loss of around 1
 ```
 INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
@@ -620,11 +625,13 @@ INFO:tensorflow:global step 2751: loss = 1.9906 (11.665 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
+<br />
 Once we run our model an event file will be created. This is where we can evaluate our model on Tensorboard.
 ```
 # - Tensorboard Allows us to see different aspects of our data such loss, convergance, and steps.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
+<br />
 Now we can test our model.<br />
 ```
 # Needed libraries --
@@ -645,6 +652,7 @@ from io import StringIO
 from PIL import Image
 %matplotlib inline
 ```
+<br />
 ```
 Set paths for labels and model location.
 MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph'
@@ -675,6 +683,7 @@ def load_image_into_numpy_array(image):
     assert training_image.shape[-1] == 3
     return training_image
 ```
+<br />
 ```
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
@@ -722,6 +731,7 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
+<br />
 Run test and view any number of test images.
 ```
 for image_path in TEST_IMAGE_PATHS:
@@ -742,8 +752,10 @@ for image_path in TEST_IMAGE_PATHS:
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
 ```
+<br />
 Example test image:<br />
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)<br />
+
 Next steps:<br />
 - Train new object detection model to detect image figure numbers.<br />
 - Parse patent text data to tokenize and formalize patent image data and image figures data.<br />
