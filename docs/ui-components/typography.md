@@ -1054,7 +1054,7 @@ def run_inference_for_single_image(image, graph):
 ![image](./docs/images/test1.png)
 ![image](./docs/images/test2.png)
 ![image](./docs/images/test3.png)
-![image](test4.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test4.png)
 ![image](https://blazecolby.github.io/docs/images/test5.png)
 
 ```Bash
