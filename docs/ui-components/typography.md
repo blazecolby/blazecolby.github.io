@@ -9,13 +9,12 @@ nav_order: 1
 
 # CNN USPTO Analysis
 ### Transfer Learning
-Intro:<br />
+
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
 
-Follow the docs to install Tensorflow.<br />
-[Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)<br />
-Download USPTO patent images.<br />
-[USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
+To get Started:<br />
+- Follow the docs to install Tensorflow. [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)<br />
+- Download USPTO patent images. [USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
 
 USPTO images come in a tiff format. Tensorflow doesn't support this so we need to convert it to another format such as JPG.
 After unzipping the USPTO images, the code below will run through all folders recursively and change any .tif to a .jpg. Run the code in the upper most directory.
