@@ -100,7 +100,7 @@ Example single annotation XML file format:
 </annotation>
 ```
 
-![image](//docs/images/single_annotation.png)
+![image](https://blazecolby.github.io/docs/ui-components/typography/single_annotation.png)
 
 Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
 
@@ -456,7 +456,7 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
     </object>
 </annotation>
 ```
-![Image](//docs/images/multi_annotation.png)
+![Image](https://blazecolby.github.io/docs/ui-components/typography/multi_annotation.png)
 
 
 Organize image information into single csv.
@@ -1051,10 +1051,10 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
-![image](./docs/images/test1.png)
-![image](./docs/images/test2.png)
-![image](./docs/images/test3.png)
-![image](./docs/images/test4.png)
+![image](https://blazecolby.github.io/docs/ui-components/typography/test1.png)
+![image](https://blazecolby.github.io/docs/ui-components/typography/test2.png)
+![image](https://blazecolby.github.io/docs/ui-components/typography/test3.png)
+![image](https://blazecolby.github.io/docs/ui-components/typography/test4.png)
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test5.png)
 
 ```Bash
