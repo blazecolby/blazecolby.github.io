@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Lists
-parent: machine_learning
+parent: Machine Learning
 nav_order: 5
 ---
 

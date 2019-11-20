@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Code
-parent: machine_learning
+parent: Machine Learning
 nav_order: 6
 ---
 

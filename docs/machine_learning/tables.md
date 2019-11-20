@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Tables
-parent: machine_learning
+parent: Machine Learning
 nav_order: 4
 ---
 
