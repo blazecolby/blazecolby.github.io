@@ -10,12 +10,14 @@ nav_order: 1
 # CNN USPTO Analysis
 ### Transfer Learning
 Intro:<br />
-Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.<br />
-Follow the docs to install Tensorflow.
+Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
+
+Follow the docs to install Tensorflow.<br />
 [Tensorflow Docs](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html)<br />
-Download USPTO patent images.
-[USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)<br />
-USPTO images come in a tiff format. Tensorflow doesn't support this so we need to convert it to another format such as JPG.<br />
+Download USPTO patent images.<br />
+[USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
+
+USPTO images come in a tiff format. Tensorflow doesn't support this so we need to convert it to another format such as JPG.
 After unzipping the USPTO images, the code below will run through all folders recursively and change any .tif to a .jpg. Run the code in the upper most directory.
 ```
 import os
@@ -40,7 +42,6 @@ for root, dirs, files in os.walk(path, topdown=False):
 ```
 
 Once we convert the files we can split the images into training and testing. Because the USPTO image set is so big, we can also take a smaller portion as a whole for our model. For the project I did a 70/30 split and used around 500 images total.
-
 
 ### Annotation
 Download the [labelImg](https://github.com/tzutalin/labelImg) desktop app. This allows you to annotate images by placing bounding boxes around the items that you want to identify. It's helpful to look at the keepboard shortcuts.
@@ -77,7 +78,6 @@ Example single annotation XML file:
     </object>
 </annotation>
 ```
-
 ![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
 
 Let's get a little bit more granular. Below is an image annotation that annotates the patents figure labels, i.e part numbers and letters.
@@ -134,8 +134,7 @@ Example multi-annotation XML file:
 
 ![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/multi_annotation.png)
 
-Once we have our XML files we can pull that info and place it into a single organized csv file:
-
+Once we have our XML files we can pull that info and place it into a single organized csv file.<br />
 The code below will recursively iterate through XML folders and pull the file name along with the information for each bounding box.
 ```
 # Credit goes to 'Copyright (c) 2017 Dat Tran' https://github.com/datitran/raccoon_dataset/blob/master/xml_to_csv.py.
@@ -214,7 +213,7 @@ item {
 }
 # For each label there will be a unique id and a given name.
 ```
-Optional: if there are a lot of labels then a script can be written to transfer the csv info into a .pbtxt file format.
+Optional: if there are a lot of labels then a script can be written to transfer the csv info into a .pbtxt file format.<br />
 Below is an example script that allows us to create a .pbtxt for a training/test set. The pbtxt can also be refered to as a labelmap.
 ```
 filename = 'train_labels.csv'
@@ -252,7 +251,7 @@ for x in file[1:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-Next we convert out labelmap to a tfrecord file which is a binary format for Tensorflow.
+Next we convert out labelmap to a tfrecord file which is a binary format for Tensorflow.<br />
 Below, class_text_to_int() allows us to convert our text labels to integer values, which will then be converted to our tfrecord format.
 ```
 Usage:
@@ -367,11 +366,10 @@ for x in file[2:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-
 Tensorflow comes with a handful of models that are pretrained. The ssd_inception_v2_coco is used here because it is a model that has a good balance between speed and accuracy.
 
-We can specify our model parameters with the config file.
-Default parameters are two hidden layers, l2 regularization, Relu activation function, batch size 12, .004 learning rate, 12000 train steps, 8000 eval steps.
+We can specify our model parameters with the config file.<br />
+Default parameters are two hidden layers, l2 regularization, Relu activation function, batch size 12, .004 learning rate, 12000 train steps, 8000 eval steps.<br />
 Below is the config file.
 ```
 model {
@@ -548,24 +546,20 @@ eval_input_reader {
   }
 }
 ```
-
-Training our model
-once we have all of the above code we can run a few commands to train our model:
-
+Training our model<br />
+Once we have all of the above code we can run a few commands to train our model.
 ```
 # - Create xml to csv train data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv
 ```
-
 ```
 # - Create xml to csv test data:
 ! /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv
 ```
-
 ```
 # - Create record train data:
 ! \
@@ -583,7 +577,6 @@ once we have all of the above code we can run a few commands to train our model:
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test.record
 ```
-
 Below is example output for a training model. It shows an approximate loss of 2. Ideally we want a loss of around 1
 ```
 INFO:tensorflow:global step 2748: loss = 1.8951 (88.086 sec/step)
@@ -601,16 +594,14 @@ INFO:tensorflow:global step 2751: loss = 1.9906 (11.665 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
-
 Once we run our model an event file will be created. This is where we can evaluate our model on Tensorboard.
-
 ```
 # - Tensorboard Allows us to see different aspects of our data such loss, convergance, and steps.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
-Now we can test our model.
-Needed libraries:
+Now we can test our model.<br />
 ```
+# Needed libraries --
 import os
 import sys
 import tarfile
@@ -628,7 +619,6 @@ from io import StringIO
 from PIL import Image
 %matplotlib inline
 ```
-
 ```
 Set paths for labels and model location.
 MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph'
@@ -659,8 +649,6 @@ def load_image_into_numpy_array(image):
     assert training_image.shape[-1] == 3
     return training_image
 ```
-
-Detection:
 ```
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
@@ -728,10 +716,8 @@ for image_path in TEST_IMAGE_PATHS:
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
 ```
-
-Example test image:
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)
-
-Next steps:
-- Train new object detection model to detect image figure numbers.
-- Parse patent text data to tokenize and formalize patent image data and image figures data.
+Example test image:<br />
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)<br />
+Next steps:<br />
+- Train new object detection model to detect image figure numbers.<br />
+- Parse patent text data to tokenize and formalize patent image data and image figures data.<br />
