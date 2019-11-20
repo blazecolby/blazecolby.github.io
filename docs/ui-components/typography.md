@@ -41,7 +41,6 @@ Uspto images came in a tiff format. Tensorflow doesn't support this so we need t
 ```Python
 import os
 from PIL import Image # Pip install PIL
-
 path = '//Tensorflow/workspace/patent_project/images/'
 for root, dirs, files in os.walk(path, topdown=False):
     for name in files:
