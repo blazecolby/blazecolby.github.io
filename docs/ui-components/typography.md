@@ -100,7 +100,7 @@ Example single annotation XML file format:
 </annotation>
 ```
 
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagessingle_annotation.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/single_annotation.png)
 
 Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
 
@@ -457,7 +457,7 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
 </annotation>
 ```
 
-![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagesmulti_annotation.png)
+![Image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/multi_annotation.png)
 
 Organize image information into single csv.
 Once we have our xml files we can pull the info and place it into a single organized csv file:
@@ -1051,11 +1051,11 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagestest1.png)
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagestest2.png)
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagestest3.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test2.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test3.png)
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test4.png)
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/imagestest5.png)
+![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test5.png)
 
 ```Bash
 for image_path in TEST_IMAGE_PATHS:
