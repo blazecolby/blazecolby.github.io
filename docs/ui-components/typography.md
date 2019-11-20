@@ -40,8 +40,9 @@ Follow the docs to install Tensorflow.
 Download Images.
 [USPTO Images](https://www.uspto.gov/learning-and-resources/bulk-data-products)
 
-Uspto images came in a tiff format. Tensorflow doesn't support this so we need to convert it to a format such as jpg.¶
-```Bash
+Uspto images came in a tiff format. Tensorflow doesn't support this so we need to convert it to a format such as jpg.
+
+```Python
 import os
 from PIL import Image # Pip install PIL
 
@@ -68,7 +69,8 @@ Use [labelImg](https://github.com/tzutalin/labelImg) to annotate images by placi
 This creates an xml file for each image that has the bounding box boundries for each image and its' item.¶
 
 Example single annotation XML file format:
-```Bash
+
+```Python
 <annotation>
     # Folder name
     <folder>1</folder>
@@ -107,7 +109,7 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
 ### Example multi-annotation XML file format:
 ### Once the images are sorted by patent image itself, we can perform object detection/recognition on the labels:
 
-```Bash
+```Python
 <annotation>
     <folder>train</folder>
     <filename>1073.jpg</filename>
@@ -461,7 +463,8 @@ Image annotation for a multi-annotation image/ recognition of the patent image a
 
 Organize image information into single csv.
 Once we have our xml files we can pull the info and place it into a single organized csv file:
-```Bash
+
+```Python
 import os
 import glob
 import pandas as pd
@@ -505,7 +508,8 @@ Create .pbtxt file
 Our pbtxt is a place where we can store all of our annotation labels, it's like a master record, we'll have each unique label listed once.
 
 Here's a partial example of what a pbtxt will look:
-```Bash
+
+```Python
 item {
     id: 1
     name: 'patent image'
@@ -526,7 +530,8 @@ First we create a txt file with all of the image labels:
 import pandas as pd
 
 # Grab Training labels
-```Bash
+
+```Python
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
 file = file[3]
@@ -562,8 +567,10 @@ for x in file[1:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
+
 Then we use our if else statement using the .txt to create a our tfrecords file:
-```Bash
+
+```Python
 # generate_tfrecord if else statement
 # Testing
 filename = 'test_labels.csv'
@@ -581,7 +588,8 @@ for x in file[2:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-```Bash
+
+```Python
 # Training
 filename = 'train_labels.csv'
 file = pd.read_csv(filename,header=None)
@@ -598,7 +606,8 @@ for x in file[2:]:
     with open(name, 'a') as f:
         f.write(out)
 ```
-```Bash
+
+```Python
 From the above code we can copy and paste the results into the 'class_text_to_int()' function below:¶
 from __future__ import print_function
 from __future__ import absolute_import
@@ -712,7 +721,8 @@ It has two hidden layers, both with an l2_regularizer, and Relu as an activation
 We have a batch size of 12. With an initial learning rate of .004.
 Number of steps to train is 12000.
 Number of steps for eval is 8000.
-```Bash
+
+```Python
 model {
   ssd {
     num_classes: 1 # this is the number of different labels that we came across when annotating our patent images.
@@ -890,19 +900,22 @@ eval_input_reader {
 
 Training our model
 once we have all of the above code we can run a few commands to run all of the code and train our model:
-```Bash
+
+```Python
 # - Create xml to csv train data:
 !python /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train_labels.csv
 ```
-```Bash
+
+```Python
 # - Create xml to csv test data:
 !python /Users/home/Documents/Tensorflow/scripts/preprocessing/xml_to_csv.py \
 -i /Users/home/Documents/Tensorflow/workspace/training_demo/images/test \
 -o /Users/home/Documents/Tensorflow/workspace/training_demo/annotations/test_labels.csv
 ```
-```Bash
+
+```Python
 # - Create record train data:
 !python \
 /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
@@ -911,7 +924,7 @@ once we have all of the above code we can run a few commands to run all of the c
 --img_path=/Users/home/Documents/Tensorflow/workspace/training_demo/images/train \
 --output_path=/Users/home/Documents/Tensorflow/workspace/training_demo/annotations/train.record
 ```
-```Bash
+```Python
 # - Create record test data:
 !python /Users/home/Documents/Tensorflow/scripts/preprocessing/generate_tfrecord.py \
 --label=patent \
@@ -938,7 +951,8 @@ INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 INFO:tensorflow:global step 2752: loss = 1.7650 (13.071 sec/step)
 ```
 Once we run our model an event file will be created. This is where we can evaluate our model.
-```Bash
+
+```Python
 # - Tensorboard Allows us to see different aspects of our data.
 !tensorboard --logdir='/Users/home/Documents/machine_learning/models-master/models/research/object_detection/training'
 ```
@@ -947,7 +961,8 @@ Object Detection
 Object detection inference - This will walk you through a pre-trained model to detect patent objects in an image.
 This notebook is using a process known as transfer learning; instead of training our own model from scratch, we use the weights from a pre-trained model.
 This allows us to save time, but may come at a cost to accuracy.
-```Bash
+
+```Python
 import os
 import sys
 import tarfile
@@ -968,13 +983,16 @@ from PIL import Image
 ```
 
 We use an "SSD with Mobilenet" model:
-```Bash
+
+```Python
 MODEL_NAME = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/patent_image_inference_graph' # Download model.
 PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph.pb' # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_LABELS = os.path.join('/Users/home/Documents/machine_learning/models-master/models/research/object_detection/data/', 'object-detection.pbtxt') # Adds label for each box.
 ```
+
 Load frozen Tensorflow model into memory:
-```
+
+```Python
 detection_graph = tf.Graph()
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
@@ -983,13 +1001,15 @@ with detection_graph.as_default():
     od_graph_def.ParseFromString(serialized_graph)
     tf.import_graph_def(od_graph_def, name='')
 ```
+
 Load label map:
 Label maps map indices to category names, so that when our convolution network predicts 1, we know that this corresponds to patent image.
-```Bash
+
+```Python
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 ```
 
-```Bash
+```Python
 def load_image_into_numpy_array(image):
     # Function supports only grayscale images
     last_axis = -1
@@ -1000,15 +1020,17 @@ def load_image_into_numpy_array(image):
     assert len(training_image.shape) == 3
     assert training_image.shape[-1] == 3
     return training_image
-    ```
-    Detection:
-```Bash
+```
+
+Detection:
+
+```Python
 PATH_TO_TEST_IMAGES_DIR = '/Users/home/Documents/machine_learning/models-master/models/research/object_detection/test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 12) ]
 IMAGE_SIZE = (25, 20)
 ```
 
-```Bash
+```Python
 def run_inference_for_single_image(image, graph):
     with graph.as_default():
         with tf.Session() as sess:
@@ -1063,7 +1085,7 @@ def run_inference_for_single_image(image, graph):
 
 <!-- https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/ -->
 
-```Bash
+```Python
 for image_path in TEST_IMAGE_PATHS:
     image = Image.open(image_path)
     # Array representation of image will be used later to prepare result image w/ boxes &* labels.
@@ -1081,7 +1103,7 @@ for image_path in TEST_IMAGE_PATHS:
                                                        line_thickness=4)
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
-    ```
+```
 
 Next steps:
 Train object detection model longer and with more images to get loss down to an aproximated 1.
