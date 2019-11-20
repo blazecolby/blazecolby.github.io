@@ -733,6 +733,12 @@ Example test image:
 
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)<br />
 
+Results
+
+The results were upper 90s for accuracy.
+
+NOTE: remember to add other random images to your test set, this can be both random images and text images from the patent data.
+
 Next steps:
-- Train new object detection model to detect image figure numbers.<br />
+- Train new object detection model to detect image figure numbers; use a pretrained character recognition model.<br />
 - Parse patent text data to tokenize and formalize patent image data and image figures data.<br />
