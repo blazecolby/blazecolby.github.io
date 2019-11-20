@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Code
-parent: UI Components
+parent: machine_learning
 nav_order: 6
 ---
 

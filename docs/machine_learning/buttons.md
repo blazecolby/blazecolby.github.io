@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Buttons
-parent: UI Components
+parent: machine_learning
 nav_order: 2
 ---
 
