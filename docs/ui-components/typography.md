@@ -93,9 +93,9 @@ Example single annotation XML file format:
 </annotation>
 ```
 
-<!-- ![image]() -->
+![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/multi_annotation.png)
 
-<img src='https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/multi_annotation.png'/>
+<!-- <img src=''/> -->
 
 
 Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
