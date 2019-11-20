@@ -71,10 +71,8 @@ Example single annotation XML file format:
     <folder>1</folder>
     # Filename
     <filename>280.jpg</filename>
-
     # path to jpg image
     <path>/Volumes/LaCie/grant_yb2_20190101/2019-01/10/165/1/280.jpg</path>
-
     # Here's the size of our image. Width-Height-Depth
     <size>
         <width>2560</width>
@@ -82,10 +80,8 @@ Example single annotation XML file format:
         <depth>1</depth>
     </size>
     <object>
-
         # Annotation label
         <name>patent image</name>
-
         # Bounding box dimension - x:829,y:2235(bottom left corner) | x:1698,y:3104(top right corner)
         <bndbox>
             <xmin>829</xmin>
