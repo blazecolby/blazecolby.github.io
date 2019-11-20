@@ -1051,10 +1051,15 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
+
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test1.png)
+
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test2.png)
+
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test3.png)
+
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test4.png)
+
 ![image](https://blazecolby.github.io/docs/ui-components/typography/test5.png)
 
 ```Bash
