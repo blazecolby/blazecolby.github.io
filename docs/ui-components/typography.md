@@ -93,10 +93,7 @@ Example single annotation XML file format:
 </annotation>
 ```
 
-![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/multi_annotation.png)
-
-<!-- <img src=''/> -->
-
+![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
 
 Image annotation for a multi-annotation image/ recognition of the patent image as an object itself.
 
@@ -1068,6 +1065,7 @@ def run_inference_for_single_image(image, graph):
                 output_dict['detection_masks'] = output_dict['detection_masks'][0]
     return output_dict
 ```
+
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)
 
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test2.png)
@@ -1077,8 +1075,6 @@ def run_inference_for_single_image(image, graph):
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test4.png)
 
 ![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test5.png)
-
-<!-- https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/ -->
 
 ```
 for image_path in TEST_IMAGE_PATHS:
@@ -1101,9 +1097,8 @@ for image_path in TEST_IMAGE_PATHS:
 ```
 
 Next steps:
-Train object detection model longer and with more images to get loss down to an aproximated 1.
-Train new object detection model to detect image figure numbers.
-Parse patent text data to tokenize and formalize patent image data and image figures data.
-Match formalized text data with image and image figures.
-Create user-interface.
-
+- Train object detection model longer and with more images to get loss down to an aproximated 1.
+- Train new object detection model to detect image figure numbers.
+- Parse patent text data to tokenize and formalize patent image data and image figures data.
+- Match formalized text data with image and image figures.
+- Create user-interface.
