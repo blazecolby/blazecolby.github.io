@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Typography
+title: CNN & Transfer Learning
 parent: UI Components
 nav_order: 1
 ---
