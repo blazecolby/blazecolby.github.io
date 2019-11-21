@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /
 ---
 
-# This site is a culmination of my ML/CS learnings.
+# My ml/cs learnings.
 {: .fs-9 }
 
 ## My general focus / mission statement
