@@ -9,14 +9,14 @@ Data Overview<br />
 
 Ames, Iowa: Alternative to the Boston Housing Data ( 2006 to 2010 )
 
-2930 observations (Property Sales)<br />
-Explanatory variables.<br />
-23 nominal - mainly dwelling structures.<br />
-23 ordinal - rate various items in property.<br />
-14 discrete - number of items; kitchens, bathrooms.<br />
-20 continuous - typically are dimensions.<br />
+- 2930 observations (Property Sales)<br />
+- Explanatory variables.<br />
+- 23 nominal - mainly dwelling structures.<br />
+- 23 ordinal - rate various items in property.<br />
+- 14 discrete - number of items; kitchens, bathrooms.<br />
+- 20 continuous - typically are dimensions.<br />
 
-Remove houses > 4000 sqft.
+NOTE: Remove houses > 4000 sqft.
 
 Problem<br />
 We want to view housing data via regression analysis.
