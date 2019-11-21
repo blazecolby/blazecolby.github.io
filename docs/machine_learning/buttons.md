@@ -54,16 +54,14 @@ train = pd.read_csv('Ames Housing Data/train.csv')
 print('Shape of test set', test.shape)
 print('Shape of train set', train.shape)
 ```
-output
+OUTPUT:
 ```
 Shape of test set (1459, 80)
 Shape of train set (1460, 81)
 ```
 Exploratory Data Analysis
 
-Brief overview of each column in data set.
-
-View of housing price distribution.
+Housing price distribution.
 ```
 lib.rcParams['figure.facecolor']= 'black'
 lib.rcParams['axes.facecolor']= 'black'
@@ -71,7 +69,6 @@ lib.rcParams['lines.markersize'] = 10
 lib.rcParams["scatter.marker"] = '.'
 lib.rcParams['figure.titlesize']= 100
 lib.rcParams['figure.figsize']=(18, 5)
-
 plt.xticks(color='w')
 plt.xlabel('Price', color='w')
 plt.ylabel('Ratio', color='w')
@@ -86,21 +83,19 @@ ax = sns.distplot(train.SalePrice, rug=True,
 
 ![Housing Distribution](/images/housepricedistribution.png)
 
-Review kurtosis and Skew
-
-skewness and kurtosis<br />
+Skewness and Kurtosis<br />
 ```
 print("Skewness: ", train['SalePrice'].skew(), '| Biased towards the right due to a few high outliers.')
 print("Kurtosis: ", train['SalePrice'].kurt(), '| Sharpness of peak, normal dist = 3')
 print('Average House Price: ', round(train['SalePrice'].mean()))
 ```
-Output
+OUTPUT:
 ```
 Skewness:  1.8828757597682129 | Biased towards the right due to a few high outliers.
 Kurtosis:  6.536281860064529 | Sharpness of peak, normal dist = 3
 Average House Price:  180921.0
 ```
-Review price to sqft to find outliers
+Review price to sqft to find outliers.
 ```
 lib.rcParams['figure.facecolor']= 'black'
 lib.rcParams['axes.facecolor']= 'black'
@@ -112,23 +107,24 @@ plt.xticks(color='w')
 plt.xlabel('Price', color='w')
 plt.ylabel('Squarefoot', color='w')
 plt.yticks(color='w')
-sns.scatterplot(data=train, x='SalePrice', y='GrLivArea', )
+
+sns.scatterplot(data=train, x='SalePrice', y='GrLivArea')
 plt.figtext(.5,.9,'Housing | Price Vs. Sqft', fontsize=20, ha='center', color='w')
 ```
 
 ![Price vs. Squarefootage](/images/pricevssqrft.png)
 
-Remove the 4 outliers, we're able to bring our data closer to a normal distribution.
+Remove the 4 outliers; we're now able to bring our data closer to a normal distribution.
 ```
 train = train[train['GrLivArea'] < 4000]
 ```
-skewness and kurtosis
+Skewness and Kurtosis - 2nd check.
 ```
 print("Skewness: ", train['SalePrice'].skew(), '| Biased towards the right due to a few high outliers.')
 print("Kurtosis: ", train['SalePrice'].kurt(), '| Sharpness of peak, normal dist = 3')
 print('Average House Price: ', round(train['SalePrice'].mean()))
 ```
-Output
+OUTPUT:
 ```
 Skewness:  1.5659592925562151 | Biased towards the right due to a few high outliers.
 Kurtosis:  3.8852828233316745 | Sharpness of peak, normal dist = 3
@@ -236,7 +232,7 @@ skewed_feats = train[numeric].apply(lambda x: pd.DataFrame.skew(x.dropna())).sor
 skewness = pd.DataFrame({'Skew' :skewed_feats})
 skewness.head(10)
 ```
-output<br />
+OUTPUT:br />
 |    Skew     |           |
 |:-----------:|:---------:|
 |MiscVal      | 24.443364 |
@@ -287,8 +283,7 @@ lasso = make_pipeline(RobustScaler(), Lasso(alpha =0.0005, random_state=1))
 score = rmsle_cv(lasso)
 print("\nLasso score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 Lasso score: 0.0006 (0.0000)
 ```
 Elastic Net
@@ -299,8 +294,7 @@ ENet = make_pipeline(RobustScaler(), ElasticNet(alpha=0.0005, l1_ratio=.9, rando
 score = rmsle_cv(ENet)
 print("ElasticNet score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 ElasticNet score: 0.0008 (0.0000)
 ```
 Kernel ridge score
@@ -309,8 +303,7 @@ KRR = KernelRidge(alpha=0.6, kernel='polynomial', degree=2, coef0=2.5)
 score = rmsle_cv(KRR)
 print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 ElasticNet score: 0.0008 (0.0000)
 ```
 Kernel ridge score
@@ -319,8 +312,7 @@ KRR = KernelRidge(alpha=0.6, kernel='polynomial', degree=2, coef0=2.5)
 score = rmsle_cv(KRR)
 print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 Kernel Ridge score: 0.0455 (0.0059)
 ```
 Gradient Boost Regression
@@ -333,8 +325,7 @@ GBoost = GradientBoostingRegressor(n_estimators=3000, learning_rate=0.05,
 score = rmsle_cv(GBoost)
 print("Gradient Boosting score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 Gradient Boosting score: 0.4439 (0.0246)
 ```
 XG Boost Regression
@@ -349,8 +340,7 @@ model_xgb = xgb.XGBRegressor(colsample_bytree=0.4603, gamma=0.0468,
 score = rmsle_cv(model_xgb)
 print("Xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 Xgboost score: 0.2112 (0.0250)
 ```
 LGBM Regression
@@ -365,8 +355,7 @@ model_lgb = lgb.LGBMRegressor(objective='regression',num_leaves=5,
 score = rmsle_cv(model_lgb)
 print("LGBM score: {:.4f} ({:.4f})\n" .format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 LGBM score: 0.3663 (0.0335)
 ```
 ```
@@ -396,8 +385,7 @@ averaged_models = AveragingModels(models = (ENet, GBoost, KRR, lasso))
 score = rmsle_cv(averaged_models)
 print(" Averaged base models score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-output
-```
+OUTPUT:```
 Averaged base models score: 0.1140 (0.0061)
 ```
 
