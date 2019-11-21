@@ -729,7 +729,6 @@ for image_path in TEST_IMAGE_PATHS:
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
 ```
-Example test image:
 
 ![image1](/images/test1.png)
 
