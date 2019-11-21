@@ -734,6 +734,9 @@ for image_path in TEST_IMAGE_PATHS:
 
 ![test image 2](/images/test2.png)
 
+![test image 4](/images/test4.png)
+
+
 Results
 
 The results were upper 90s for accuracy.
