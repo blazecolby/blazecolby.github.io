@@ -146,9 +146,8 @@ Example multi-annotation XML file:
     #
 </annotation>
 ```
-<br />
 
-![Multiple annotations](/images/multi_annotation.png)
+![multiple annotations](/images/multi_annotation.png)
 
 Once we have the XML files we can pull that info and place it into a single organized csv file.<br />
 The code below will recursively iterate through folders and pull the file name along with the XML info for each bounding box.
