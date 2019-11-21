@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Buttons
+title: Multiple Regression
 parent: Machine Learning
 nav_order: 2
 ---
@@ -16,8 +16,6 @@ Explanatory variables.<br />
 14 discrete - number of items; kitchens, bathrooms.<br />
 20 continuous - typically are dimensions.<br />
 
-Notes: Key Words: <br />
-Multiple Regression; Linear Models; Assessed Value; Group Project.<br />
 Remove houses > 4000 sqft.
 
 Problem<br />
@@ -61,8 +59,9 @@ Shape of train set (1460, 81)
 
 Exploratory Data Analysis
 
-Brief overview of each column in data set
-View of housing price distribution
+Brief overview of each column in data set.
+
+View of housing price distribution.
 ```
 lib.rcParams['figure.facecolor']= 'black'
 lib.rcParams['axes.facecolor']= 'black'
@@ -82,6 +81,8 @@ ax = sns.distplot(train.SalePrice, rug=True,
                   kde_kws={"color": "r", "lw": 1, "label": "KDE"},
                   hist_kws={"histtype": "step", "linewidth": 1, "alpha":1, "color": "r"})
 ```
+
+![Housing Distribution](/images/housepricedistribution.png)
 
 Review kurtosis and Skew
 
@@ -112,6 +113,9 @@ plt.yticks(color='w')
 sns.scatterplot(data=train, x='SalePrice', y='GrLivArea', )
 plt.figtext(.5,.9,'Housing | Price Vs. Sqft', fontsize=20, ha='center', color='w')
 ```
+
+![Price vs. Squarefootage](/images/pricevssqrft.png)
+
 Remove the 4 outliers, we're able to bring our data closer to a normal distribution.
 ```
 train = train[train['GrLivArea'] < 4000]
@@ -137,6 +141,9 @@ corrmat = train.corr()
 f, ax = plt.subplots(figsize=(12, 9))
 sns.heatmap(corrmat, vmax=.8, square=True)
 ```
+
+![Correlation Plot](/images/corrplot.png)
+
 Review positive correlation
 ```
 c = train.corr()
@@ -161,6 +168,9 @@ plt.ylabel('Distribution', color='w')
 sns.distplot(positive_corr)
 plt.figtext(.5,.9,'Positive Correlation Distribution', fontsize=20, ha='center', color='w')
 ```
+
+![Positive Correlation Distribution](/images/poscorrdist.png)
+
 Negative correlation ditributions
 ```
 lib.rcParams['figure.facecolor']= 'black'
@@ -177,6 +187,9 @@ plt.ylabel('Distribution', color='w')
 sns.distplot(negative_corr)
 plt.figtext(.5,.9,'Negative Correlation Distribution', fontsize=20, ha='center', color='w')
 ```
+
+![Negative Correlation Distribution](/images/negcordist.png)
+
 Clean, transform, and encode data
 ```
 cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
@@ -221,6 +234,20 @@ skewed_feats = train[numeric].apply(lambda x: pd.DataFrame.skew(x.dropna())).sor
 skewness = pd.DataFrame({'Skew' :skewed_feats})
 skewness.head(10)
 ```
+output<br />
+|    Skew     |           |
+|:-----------:|:---------:|
+|MiscVal      | 24.443364 |
+|PoolArea     | 17.522613 |
+|LotArea      | 12.587561 |
+|3SsnPorch    | 10.289866 |
+|LowQualFinSF | 8.998564  |
+|LandSlope    | 4.806279  |
+|KitchenAbvGr | 4.481366  |
+|BsmtFinSF2   | 4.248587  |
+|BsmtHalfBath | 4.128967  |
+|ScreenPorch  | 4.115641  |
+
 Fix Skewness
 ```
 skewness = skewness[abs(skewness) > 0.75]
