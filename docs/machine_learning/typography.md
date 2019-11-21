@@ -88,6 +88,7 @@ Example single annotation XML file:
 </annotation>
 ```
 <br />
+
 ![annotation](/images/single_annotation.png)
 
 Multiple Annotations
