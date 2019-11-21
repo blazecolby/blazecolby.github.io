@@ -731,7 +731,7 @@ for image_path in TEST_IMAGE_PATHS:
 
 Example test image:
 
-![image](images/test2.png)
+![image](/images/test2.png)
 
 
 
