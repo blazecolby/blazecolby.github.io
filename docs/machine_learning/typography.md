@@ -88,7 +88,7 @@ Example single annotation XML file:
 </annotation>
 ```
 <br />
-![image](https://github.com/blazecolby/blazecolby.github.io/blob/master/docs/images/single_annotation.png)
+![annotation](/images/single_annotation.png)
 
 Multiple Annotations
 
