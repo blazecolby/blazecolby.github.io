@@ -54,9 +54,11 @@ train = pd.read_csv('Ames Housing Data/train.csv')
 print('Shape of test set', test.shape)
 print('Shape of train set', train.shape)
 ```
+output
+```
 Shape of test set (1459, 80)
 Shape of train set (1460, 81)
-
+```
 Exploratory Data Analysis
 
 Brief overview of each column in data set.
