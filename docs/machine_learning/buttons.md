@@ -18,10 +18,8 @@ Ames, Iowa: Alternative to the Boston Housing Data ( 2006 to 2010 )
 
 NOTE: Remove houses > 4000 sqft.
 
-Problem<br />
-We want to view housing data via regression analysis.
+We want to view housing data with different regression analyses.
 
-Load Libraries and Data¶
 ```
 # Import libraries
 import numpy as np
