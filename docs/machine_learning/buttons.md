@@ -114,7 +114,7 @@ plt.figtext(.5,.9,'Housing | Price Vs. Sqft', fontsize=20, ha='center', color='w
 
 ![Price vs. Squarefootage](/images/pricevssqrft.png)
 
-Remove the 4 outliers; we're now able to bring our data closer to a normal distribution.
+By removing the 4 outliers, we're now able to bring our data closer to a normal distribution.
 ```
 train = train[train['GrLivArea'] < 4000]
 ```
@@ -130,7 +130,8 @@ Skewness:  1.5659592925562151 | Biased towards the right due to a few high outli
 Kurtosis:  3.8852828233316745 | Sharpness of peak, normal dist = 3
 Average House Price:  180151.0
 ```
-Review Correlations
+
+Correlations
 ```
 #correlation matrix
 lib.rcParams['figure.facecolor']= 'w'
@@ -142,7 +143,7 @@ sns.heatmap(corrmat, vmax=.8, square=True)
 
 ![Correlation Plot](/images/corrplot.png)
 
-Review positive correlation
+Positive correlation distribution
 ```
 c = train.corr()
 s = c.unstack()
@@ -169,7 +170,7 @@ plt.figtext(.5,.9,'Positive Correlation Distribution', fontsize=20, ha='center',
 
 ![Positive Correlation Distribution](/images/poscorrdist.png)
 
-Negative correlation ditributions
+Negative correlation ditribution
 ```
 lib.rcParams['figure.facecolor']= 'black'
 lib.rcParams['axes.facecolor']= 'black'
@@ -188,7 +189,7 @@ plt.figtext(.5,.9,'Negative Correlation Distribution', fontsize=20, ha='center',
 
 ![Negative Correlation Distribution](/images/negcordist.png)
 
-Clean, transform, and encode data
+Clean, transform, and encode data.
 ```
 cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
         'ExterQual', 'ExterCond','HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
@@ -201,6 +202,7 @@ feature_does_not_exist = [ 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1
                            'GarageType', 'GarageYrBlt', 'GarageFinish', 'GarageFinish', 'GarageQual', 'GarageCond',
                            'PoolQC', 'Fence', 'MiscFeature' ]
 ```
+
 Train
 ```
 train.Alley = train.Alley.fillna("No access")
@@ -223,7 +225,8 @@ for x in cols:
     lbl.fit(list(pd.Series(train[x].values)))
     train[x] = lbl.transform(list(pd.Series(train[x].values)))
 ```
-View skewness
+
+Skewness
 ```
 numeric = train.dtypes[train.dtypes != "object"].index
 
@@ -246,6 +249,7 @@ OUTPUT:br />
 |BsmtHalfBath | 4.128967  |
 |ScreenPorch  | 4.115641  |
 
+
 Fix Skewness
 ```
 skewness = skewness[abs(skewness) > 0.75]
@@ -254,7 +258,8 @@ lam = 0.15
 for feat in skewed_features:
     train[feat] = boxcox1p(train[feat], lam)
 ```
-Get dummies
+
+Get Dummies
 ```
 train = pd.get_dummies(train)
 
@@ -264,6 +269,7 @@ train.fillna(train.mean(), inplace=True)
 X_train = train
 y_train = train.SalePrice
 ```
+
 Modelling
 
 Kfold function randomizes our data, and splits it into train/test sets.<br />
@@ -277,44 +283,43 @@ def rmsle_cv(model):
     rmse= np.sqrt(-cross_val_score(model, train.values, y_train, scoring="neg_mean_squared_error", cv = kf))
     return(rmse)
 ```
+
 Lasso Regression
 ```
 lasso = make_pipeline(RobustScaler(), Lasso(alpha =0.0005, random_state=1))
 score = rmsle_cv(lasso)
 print("\nLasso score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
+OUTPUT:
+```
 Lasso score: 0.0006 (0.0000)
 ```
+
 Elastic Net
 
-Linear regression with combined L1 and L2 priors as regularizer.
+Linear regression with combined L1 and L2 as regularizer.
 ```
 ENet = make_pipeline(RobustScaler(), ElasticNet(alpha=0.0005, l1_ratio=.9, random_state=3))
 score = rmsle_cv(ENet)
 print("ElasticNet score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
+OUTPUT:
+```
 ElasticNet score: 0.0008 (0.0000)
 ```
-Kernel ridge score
+
+Kernel Ridge Score
 ```
 KRR = KernelRidge(alpha=0.6, kernel='polynomial', degree=2, coef0=2.5)
 score = rmsle_cv(KRR)
 print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
-ElasticNet score: 0.0008 (0.0000)
+
+OUTPUT:
 ```
-Kernel ridge score
-```
-KRR = KernelRidge(alpha=0.6, kernel='polynomial', degree=2, coef0=2.5)
-score = rmsle_cv(KRR)
-print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
-```
-OUTPUT:```
 Kernel Ridge score: 0.0455 (0.0059)
 ```
+
 Gradient Boost Regression
 ```
 GBoost = GradientBoostingRegressor(n_estimators=3000, learning_rate=0.05,
@@ -325,9 +330,11 @@ GBoost = GradientBoostingRegressor(n_estimators=3000, learning_rate=0.05,
 score = rmsle_cv(GBoost)
 print("Gradient Boosting score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
+OUTPUT:
+```
 Gradient Boosting score: 0.4439 (0.0246)
 ```
+
 XG Boost Regression
 ```
 model_xgb = xgb.XGBRegressor(colsample_bytree=0.4603, gamma=0.0468,
@@ -340,9 +347,12 @@ model_xgb = xgb.XGBRegressor(colsample_bytree=0.4603, gamma=0.0468,
 score = rmsle_cv(model_xgb)
 print("Xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
+
+OUTPUT:
+```
 Xgboost score: 0.2112 (0.0250)
 ```
+
 LGBM Regression
 ```
 model_lgb = lgb.LGBMRegressor(objective='regression',num_leaves=5,
@@ -355,9 +365,12 @@ model_lgb = lgb.LGBMRegressor(objective='regression',num_leaves=5,
 score = rmsle_cv(model_lgb)
 print("LGBM score: {:.4f} ({:.4f})\n" .format(score.mean(), score.std()))
 ```
-OUTPUT:```
+OUTPUT:
+```
 LGBM score: 0.3663 (0.0335)
 ```
+
+Average of models
 ```
 class AveragingModels(BaseEstimator, RegressorMixin, TransformerMixin):
     def __init__(self, models):
@@ -379,13 +392,16 @@ class AveragingModels(BaseEstimator, RegressorMixin, TransformerMixin):
         ])
         return np.mean(predictions, axis=1)
 ```
+
+Run class
 ```
 averaged_models = AveragingModels(models = (ENet, GBoost, KRR, lasso))
 
 score = rmsle_cv(averaged_models)
 print(" Averaged base models score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 ```
-OUTPUT:```
+OUTPUT:
+```
 Averaged base models score: 0.1140 (0.0061)
 ```
 
