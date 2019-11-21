@@ -731,7 +731,7 @@ for image_path in TEST_IMAGE_PATHS:
 
 Example test image:
 
-![image](https://github.com/blazecolby/blazecolby.github.io/tree/master/docs/images/test1.png)<br />
+![image](/images/test1.png)<br />
 
 Results
 
