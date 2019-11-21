@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /
 ---
 
-# My ml/cs learnings.
+# My ML & CS learnings.
 {: .fs-9 }
 
 ## My general focus / mission statement
@@ -20,6 +20,3 @@ As of now, my main focus is to help myself and those around me gain insight thro
 
 ---
 
-### Some background.
-
----
