@@ -5,33 +5,14 @@ parent: Machine Learning
 nav_order: 6
 ---
 
-# Code
+# Food 101
 {: .no_toc }
-
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
 
 ---
 
-## Inline code
-
-Code can be rendered inline by wrapping it in single back ticks.
-
-<div class="code-example" markdown="1">
-Lorem ipsum dolor sit amet, `<inline code snippet>` adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-</div>
-
-
-$$ \text{Food 101} $$
-_________
-
 We will be exploring a food classification problem. We will use a convolutional neural network backbone and a fully connected head with a single hidden layer as a classifier.
 
-| SoTAs |
-|-------|
+SoTAs
 
 | Model | Augmentations | Crops | Epochs | Additional Notes | Top-1 Accuracy % | Top-5 Accuracy % |
 |-------|---------------|-------|--------|------------------|------------------|------------------|
@@ -49,7 +30,7 @@ _____________
 | Training images were not cleaned. |
 | Images were rescaled to have max sidelength of 512 pixels. |
 
-s
+
 
 ```
 %reload_ext autoreload
@@ -72,13 +53,13 @@ img_size = 224
 path = untar_data(URLs.FOOD)
 path_img = path/'images'
 ```
-```
+
 | Train/Test Split |
 |------------------|
 | Train: 60,600 images |
 | Val  : 15,150 images |
 | Test : 25,250 images |
-```
+
 
 ```
 train_path = path/'train.txt'
@@ -106,13 +87,11 @@ data = (ImageList.from_df(df=train_df, path=path/'images', cols=1)
         .normalize(imagenet_stats))
 ```
 
-```
 Below is a list of the primary transformations used by fastai. Note that the two main things we can change are the degree to which an item will receive a transformation and the degree to how much the random selected range will vary.
 
 Note that the transform method returns a tuple of two lists of transforms; one training + one validation. The second list is limited to resizing.
 
-| Default Transforms |
-|----------|
+### Default Transformations
 
 |  type    |  params   | probability |
 |----------|-----------|-------------|
@@ -125,58 +104,42 @@ Note that the transform method returns a tuple of two lists of transforms; one t
 | contrast       | scale(0.8, 1.25) | 0.75 |
 | crop_pad       | na | 1.0 |
 
-$\text{}$
-$\text{}$
-
 | Secondary Transformations |
 |-------------------------|
 | jitter, skew, squish |
-```
 
 ```
 data.show_batch(rows=3, figsize=(10, 10)) # visualize the data
 ```
 
-```
-$$ \text{Original Image} $$
-```
+### Original Image
 
 ```
 img = open_image(path/'images'/'baklava'/'1006121.jpg') # Example single image
 img.show()
 ```
 
-```
-$$ \text{Example Transformations Applied} $$
-```
+### Example Transformations Applied
 
 ```
-# Example transformations
 [img.apply_tfms(get_transforms()[0]).show(ax=ax) for i,ax in enumerate(plt.subplots(1, 5, figsize=(16, 8))[1].flatten())];
 ```
 
-```
-$$ \text{Classes & Class Count} $$
-```
+Classes & Class Count
 
 ```
 print(data.classes); print(data.c)
 ```
 
-```
-$$ \text{Metrics} $$
+### Metrics
 
-$$ \text{Top N Accuracy : measures how often predicted class falls in top N values.} $$
-
-```
+#### Top N Accuracy : measures how often predicted class falls in top N values.
 
 ```
 learn = cnn_learner(data, model, metrics=accuracy, callback_fns=ShowGraph) # Top 1 accuracy == traditional accuracy
 ```
 
-```
-$$ \text{Optimal Learning Rate} $$
-```
+### Optimal Learning Rate
 
 ```
 learn.lr_find()
@@ -299,7 +262,6 @@ One additional option to improve our model is TTA.
 learn.validate(test_data.train_dl)
 ```
 
-```
 The next step for me would be to slightly increase the variance of some of the available transformations, I believe that the model will learn more quickly and become more robust. -- after some experimentation.
 
 Note that our model struggles with fine grained differences.
@@ -308,7 +270,6 @@ The other main area that I would focus on is to fix the mislabeled images, then 
 
 As we go through our model it's important to get to know the data, and checking on the data intermittently throughout the training process is how we know what is working.
 
-```
 
 
 </div>
