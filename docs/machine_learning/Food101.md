@@ -1,11 +1,12 @@
 ---
 layout: default
-title: Code
+title: Food101
 parent: Machine Learning
-nav_order: 6
+nav_order: 3
 ---
 
 # Food 101
+## Fastai and RNN
 {: .no_toc }
 
 ---
