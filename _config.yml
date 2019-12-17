@@ -32,7 +32,7 @@ heading_anchors: true
 # Aux links for the upper right navigation
 aux_links:
   "LinkedIn":
-    - "www.linkedin.com/in/blaze-rogers/"
+    - "//www.linkedin.com/in/blaze-rogers/"
 
 # Footer content appears at the bottom of every page's main content
 footer_content: ''
