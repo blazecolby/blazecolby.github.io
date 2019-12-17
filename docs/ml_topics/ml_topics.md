@@ -1,12 +1,12 @@
 ---
 layout: default
-title: ML Projects
+title: ML Topics
 nav_order: 3
 has_children: true
-permalink: /docs/ML Projects
+permalink: /docs/ML Topics
 ---
 
-# Machine Learning
+# Machine Learning Topics
 
 To make it as easy as possible to write documentation in plain Markdown, most UI components are styled using default Markdown elements with few additional CSS classes needed.
 

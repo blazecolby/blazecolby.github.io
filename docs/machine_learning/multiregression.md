@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Multiple Regression
-parent: Machine Learning
+title: Multi Regression
+parent: ML Projects
 nav_order: 2
 ---
 

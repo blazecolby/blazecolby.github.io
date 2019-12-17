@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Food101
-parent: Machine Learning
+parent: ML Projects
 nav_order: 3
 ---
 

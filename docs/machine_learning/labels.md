@@ -1,7 +1,7 @@
 ---
 layout: default
-title: CNN & Transfer Learning
-parent: Machine Learning
+title: CNN + Transfer Learning
+parent: ML Projects
 nav_order: 1
 ---
 #### Code: Python
