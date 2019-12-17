@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Machine Learning
+title: ML Projects
 nav_order: 3
 has_children: true
 permalink: /docs/Machine Learning
