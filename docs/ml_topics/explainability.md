@@ -171,7 +171,9 @@ _ = viz.visualize_image_attr(None, original_image, method="original_image", titl
 _ = viz.visualize_image_attr(attr_ig, original_image, method="blended_heat_map",sign="all", show_colorbar=True, title="Overlay of Integrated Gradients")
 ```
 
-![Boat Images](/images/boats.png)
+![Boat Image 1](/images/boats.png)
+
+![Boat Image 2](/images/boats_2.png)
 
 The image on the top is the original image of a ship. The image on the bottom is the overlay of gradient magnitudes showing what attributes contribute to the overall prediction of a ship. Integrated gradients are being used just as before. Although the image is really low resolution we can make out a set of pixels that were used for the prediction. By viewing certain pixels or superpixels we can see general behaviors of how the model is making predictions. 
 
