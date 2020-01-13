@@ -5,6 +5,12 @@ parent: ML Projects
 nav_order: 2
 ---
 
+#### Code: Python3.7
+#### Main packages: sklearn, pandas, xgboost, numpy
+#### Read Time: ~ 15-30 min
+#### Github: [multi_Regression](https://github.com/blazecolby/blazecolby.github.io/blob/master/code/mulit_regression.ipynb)
+<br />
+<br />
 
 # Multiple Regression
 

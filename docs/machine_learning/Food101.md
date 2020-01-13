@@ -5,8 +5,17 @@ parent: ML Projects
 nav_order: 3
 ---
 
+#### Code: Python3.7
+#### Main packages: Pytorch, Fastai, Pandas
+#### Read Time: ~ 15-30 min
+#### Github: [food101](https://github.com/blazecolby/blazecolby.github.io/blob/master/code/food101.ipynb)
+<br />
+<br />
+
 # Food 101
+
 ## Fastai and RNN
+
 {: .no_toc }
 
 ---

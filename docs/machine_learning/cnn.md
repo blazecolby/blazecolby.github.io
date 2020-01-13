@@ -9,9 +9,12 @@ nav_order: 1
 #### Code: Python
 #### Main packages: Pillow, Tensorflow, Protobuf, Tensorboard
 #### Read Time: ~ 15-30 min
+#### Github: [cnn_tensorflow](https://github.com/blazecolby/blazecolby.github.io/tree/master/code/cnn_tensorflow)
 <br />
 <br />
+
 # CNN USPTO Analysis
+
 ### Transfer Learning
 
 Patents are filled with technical jargon and legal jargon. Typically, the information may be understood with enough time, or preexisting domain knowledge. Using machine learning and some creativity, I believe it's possible to simplify this data for the average joe, like myself. Hopefully this project will turn into something that allows an individual to take their domain knowledge their idea and use a mix of a user interface and machine learning to find relavent patents and ideas on how a patent my be applicable to them.
