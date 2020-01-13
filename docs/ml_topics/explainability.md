@@ -5,6 +5,9 @@ parent: ML Topics
 nav_order: 2
 ---
 
+#### Code: Python3.7
+#### Main packages: Pytorch, Captum, CUDA, Lime, Pillow
+#### Read Time: ~ 15-30 min
 
 # What does Explainability mean:
 ___
