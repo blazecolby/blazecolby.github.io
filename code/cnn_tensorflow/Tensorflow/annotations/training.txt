@@ -1,0 +1,712 @@
+item {
+  id: 1
+  name: '56'
+}
+item {
+  id: 2
+  name: '8'
+}
+item {
+  id: 3
+  name: '6'
+}
+item {
+  id: 4
+  name: '30'
+}
+item {
+  id: 5
+  name: '10'
+}
+item {
+  id: 6
+  name: '30'
+}
+item {
+  id: 7
+  name: '54'
+}
+item {
+  id: 8
+  name: '38'
+}
+item {
+  id: 9
+  name: 'FIG. 11'
+}
+item {
+  id: 10
+  name: '10'
+}
+item {
+  id: 11
+  name: 'G'
+}
+item {
+  id: 12
+  name: '26'
+}
+item {
+  id: 13
+  name: 'H'
+}
+item {
+  id: 14
+  name: 'J'
+}
+item {
+  id: 15
+  name: '14'
+}
+item {
+  id: 16
+  name: 'K'
+}
+item {
+  id: 17
+  name: '10'
+}
+item {
+  id: 18
+  name: '18'
+}
+item {
+  id: 19
+  name: '24'
+}
+item {
+  id: 20
+  name: '49'
+}
+item {
+  id: 21
+  name: '41'
+}
+item {
+  id: 22
+  name: 'M'
+}
+item {
+  id: 23
+  name: '48'
+}
+item {
+  id: 24
+  name: '48'
+}
+item {
+  id: 25
+  name: '20'
+}
+item {
+  id: 26
+  name: 'N'
+}
+item {
+  id: 27
+  name: '46'
+}
+item {
+  id: 28
+  name: '47'
+}
+item {
+  id: 29
+  name: '40'
+}
+item {
+  id: 30
+  name: '12'
+}
+item {
+  id: 31
+  name: '36'
+}
+item {
+  id: 32
+  name: '42'
+}
+item {
+  id: 33
+  name: '24'
+}
+item {
+  id: 34
+  name: 'L'
+}
+item {
+  id: 35
+  name: '44'
+}
+item {
+  id: 36
+  name: '32'
+}
+item {
+  id: 37
+  name: 'M'
+}
+item {
+  id: 38
+  name: '32'
+}
+item {
+  id: 39
+  name: '44'
+}
+item {
+  id: 40
+  name: '16'
+}
+item {
+  id: 41
+  name: '18'
+}
+item {
+  id: 42
+  name: '43'
+}
+item {
+  id: 43
+  name: '22'
+}
+item {
+  id: 44
+  name: '45'
+}
+item {
+  id: 45
+  name: '8'
+}
+item {
+  id: 46
+  name: '38'
+}
+item {
+  id: 47
+  name: '34'
+}
+item {
+  id: 48
+  name: '30'
+}
+item {
+  id: 49
+  name: '14'
+}
+item {
+  id: 50
+  name: '30'
+}
+item {
+  id: 51
+  name: '6'
+}
+item {
+  id: 52
+  name: '4A'
+}
+item {
+  id: 53
+  name: '8'
+}
+item {
+  id: 54
+  name: '10'
+}
+item {
+  id: 55
+  name: '10'
+}
+item {
+  id: 56
+  name: '10'
+}
+item {
+  id: 57
+  name: 'FIG. 14'
+}
+item {
+  id: 58
+  name: 'FIG. 13'
+}
+item {
+  id: 59
+  name: 'FIG. 12'
+}
+item {
+  id: 60
+  name: '6'
+}
+item {
+  id: 61
+  name: '8'
+}
+item {
+  id: 62
+  name: '6'
+}
+item {
+  id: 63
+  name: '8'
+}
+item {
+  id: 64
+  name: '6'
+}
+item {
+  id: 65
+  name: '8'
+}
+item {
+  id: 66
+  name: '30'
+}
+item {
+  id: 67
+  name: '10'
+}
+item {
+  id: 68
+  name: '30'
+}
+item {
+  id: 69
+  name: '38'
+}
+item {
+  id: 70
+  name: '6'
+}
+item {
+  id: 71
+  name: 'FIG. 16'
+}
+item {
+  id: 72
+  name: '10'
+}
+item {
+  id: 73
+  name: '58'
+}
+item {
+  id: 74
+  name: '8'
+}
+item {
+  id: 75
+  name: '30'
+}
+item {
+  id: 76
+  name: '10'
+}
+item {
+  id: 77
+  name: '14'
+}
+item {
+  id: 78
+  name: '30'
+}
+item {
+  id: 79
+  name: 'FIG. 15A'
+}
+item {
+  id: 80
+  name: '15A'
+}
+item {
+  id: 81
+  name: '46'
+}
+item {
+  id: 82
+  name: 'P'
+}
+item {
+  id: 83
+  name: '20'
+}
+item {
+  id: 84
+  name: '18'
+}
+item {
+  id: 85
+  name: '48'
+}
+item {
+  id: 86
+  name: '46'
+}
+item {
+  id: 87
+  name: '48'
+}
+item {
+  id: 88
+  name: 'Q'
+}
+item {
+  id: 89
+  name: '46'
+}
+item {
+  id: 90
+  name: '48'
+}
+item {
+  id: 91
+  name: '10'
+}
+item {
+  id: 92
+  name: '8'
+}
+item {
+  id: 93
+  name: 'P'
+}
+item {
+  id: 94
+  name: 'FIG. 15'
+}
+item {
+  id: 95
+  name: '22'
+}
+item {
+  id: 96
+  name: '14'
+}
+item {
+  id: 97
+  name: '10'
+}
+item {
+  id: 98
+  name: '8'
+}
+item {
+  id: 99
+  name: '30'
+}
+item {
+  id: 100
+  name: '32'
+}
+item {
+  id: 101
+  name: '32'
+}
+item {
+  id: 102
+  name: '30'
+}
+item {
+  id: 103
+  name: '12'
+}
+item {
+  id: 104
+  name: '52'
+}
+item {
+  id: 105
+  name: '20'
+}
+item {
+  id: 106
+  name: '50'
+}
+item {
+  id: 107
+  name: '24'
+}
+item {
+  id: 108
+  name: '26'
+}
+item {
+  id: 109
+  name: '18'
+}
+item {
+  id: 110
+  name: '6'
+}
+item {
+  id: 111
+  name: '12'
+}
+item {
+  id: 112
+  name: '10'
+}
+item {
+  id: 113
+  name: '14'
+}
+item {
+  id: 114
+  name: '8'
+}
+item {
+  id: 115
+  name: '10'
+}
+item {
+  id: 116
+  name: '24'
+}
+item {
+  id: 117
+  name: 'A'
+}
+item {
+  id: 118
+  name: '18'
+}
+item {
+  id: 119
+  name: '16'
+}
+item {
+  id: 120
+  name: '18'
+}
+item {
+  id: 121
+  name: '22'
+}
+item {
+  id: 122
+  name: '10'
+}
+item {
+  id: 123
+  name: 'F'
+}
+item {
+  id: 124
+  name: 'E'
+}
+item {
+  id: 125
+  name: '12'
+}
+item {
+  id: 126
+  name: 'D'
+}
+item {
+  id: 127
+  name: '14'
+}
+item {
+  id: 128
+  name: 'B'
+}
+item {
+  id: 129
+  name: 'C'
+}
+item {
+  id: 130
+  name: '6'
+}
+item {
+  id: 131
+  name: '8'
+}
+item {
+  id: 132
+  name: '10'
+}
+item {
+  id: 133
+  name: '12'
+}
+item {
+  id: 134
+  name: '14'
+}
+item {
+  id: 135
+  name: '72'
+}
+item {
+  id: 136
+  name: '73'
+}
+item {
+  id: 137
+  name: 'R'
+}
+item {
+  id: 138
+  name: '44'
+}
+item {
+  id: 139
+  name: '71'
+}
+item {
+  id: 140
+  name: '12'
+}
+item {
+  id: 141
+  name: '75'
+}
+item {
+  id: 142
+  name: '38'
+}
+item {
+  id: 143
+  name: 'F'
+}
+item {
+  id: 144
+  name: '76'
+}
+item {
+  id: 145
+  name: '40'
+}
+item {
+  id: 146
+  name: '40'
+}
+item {
+  id: 147
+  name: '74'
+}
+item {
+  id: 148
+  name: '14'
+}
+item {
+  id: 149
+  name: '80'
+}
+item {
+  id: 150
+  name: '10'
+}
+item {
+  id: 151
+  name: '30'
+}
+item {
+  id: 152
+  name: '30'
+}
+item {
+  id: 153
+  name: '32'
+}
+item {
+  id: 154
+  name: '8'
+}
+item {
+  id: 155
+  name: '8'
+}
+item {
+  id: 156
+  name: '6'
+}
+item {
+  id: 157
+  name: '12'
+}
+item {
+  id: 158
+  name: '16'
+}
+item {
+  id: 159
+  name: '18'
+}
+item {
+  id: 160
+  name: '22'
+}
+item {
+  id: 161
+  name: '74'
+}
+item {
+  id: 162
+  name: '12'
+}
+item {
+  id: 163
+  name: '16'
+}
+item {
+  id: 164
+  name: '20'
+}
+item {
+  id: 165
+  name: '24'
+}
+item {
+  id: 166
+  name: '10'
+}
+item {
+  id: 167
+  name: '10'
+}
+item {
+  id: 168
+  name: '24'
+}
+item {
+  id: 169
+  name: '18'
+}
+item {
+  id: 170
+  name: '22'
+}
+item {
+  id: 171
+  name: '12'
+}
+item {
+  id: 172
+  name: '20'
+}
+item {
+  id: 173
+  name: '16'
+}
+item {
+  id: 174
+  name: '18'
+}
+item {
+  id: 175
+  name: '24'
+}
+item {
+  id: 176
+  name: '10'
+}
+item {
+  id: 177
+  name: '22'
+}
+item {
+  id: 178
+  name: '20'
+}

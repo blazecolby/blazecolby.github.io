@@ -1,0 +1,64 @@
+item {
+  id: 179
+  name: '8'
+}
+item {
+  id: 180
+  name: '62'
+}
+item {
+  id: 181
+  name: 'FIG. 18'
+}
+item {
+  id: 182
+  name: '64'
+}
+item {
+  id: 183
+  name: '64'
+}
+item {
+  id: 184
+  name: '70'
+}
+item {
+  id: 185
+  name: '10'
+}
+item {
+  id: 186
+  name: '66'
+}
+item {
+  id: 187
+  name: '68'
+}
+item {
+  id: 188
+  name: '66'
+}
+item {
+  id: 189
+  name: '6'
+}
+item {
+  id: 190
+  name: '8'
+}
+item {
+  id: 191
+  name: '60'
+}
+item {
+  id: 192
+  name: '10'
+}
+item {
+  id: 193
+  name: '6'
+}
+item {
+  id: 194
+  name: 'FIG. 17'
+}

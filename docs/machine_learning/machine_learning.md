@@ -9,6 +9,6 @@ permalink: /docs/ML Projects
 
 # Machine Learning
 
-Machine learning projects will be stored here. 
+Machine learning is a place where I can share some of the machine learning projects that I have worked on. 
 
 {: .fs-6 .fw-300 }

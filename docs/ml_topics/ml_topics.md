@@ -8,6 +8,6 @@ permalink: /docs/ML Topics
 
 # Machine Learning Topics
 
-Machine learning topics
+Machine learning topics is a place to write down ideas related to artificial intelligence. 
 
 {: .fs-6 .fw-300 }
