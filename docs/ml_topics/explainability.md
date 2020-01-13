@@ -7,7 +7,7 @@ nav_order: 2
 
 
 # What does Explainability mean:
-
+___
 
 ## Explainability does not just pertain to machine learning.
 
@@ -173,6 +173,8 @@ _ = viz.visualize_image_attr(attr_ig, original_image, method="blended_heat_map",
 
 ![Boat Image 1](/images/boats.png)
 
+--
+
 ![Boat Image 2](/images/boats_2.png)
 
 The image on the top is the original image of a ship. The image on the bottom is the overlay of gradient magnitudes showing what attributes contribute to the overall prediction of a ship. Integrated gradients are being used just as before. Although the image is really low resolution we can make out a set of pixels that were used for the prediction. By viewing certain pixels or superpixels we can see general behaviors of how the model is making predictions. 
@@ -327,7 +329,7 @@ Above we can see the outline of our image showing how the image is selecting the
 
 
 # Explainability as a workflow:
-
+___
 
 ## Explainability can be integrated into the workflow from the very beginning.
 
