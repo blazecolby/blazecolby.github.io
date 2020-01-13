@@ -1,13 +1,13 @@
 ---
 layout: default
 title: ML Topics
-nav_order: 3
+nav_order: 1
 has_children: true
 permalink: /docs/ML Topics
 ---
 
 # Machine Learning Topics
 
-To make it as easy as possible to write documentation in plain Markdown, most UI components are styled using default Markdown elements with few additional CSS classes needed.
+Machine learning topics
 
 {: .fs-6 .fw-300 }
