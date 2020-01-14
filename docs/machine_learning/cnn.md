@@ -5,8 +5,7 @@ parent: ML Projects
 nav_order: 1
 ---
 
-
-#### Code: Python
+#### Code: Python3.7
 #### Main packages: Pillow, Tensorflow, Protobuf, Tensorboard
 #### Read Time: ~ 15-30 min
 #### Github: [cnn_tensorflow](https://github.com/blazecolby/blazecolby.github.io/tree/master/code/cnn_tensorflow)
