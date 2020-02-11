@@ -1,0 +1,84 @@
+YOLO V3 was released and published in 2018. The release is considered by the author to be of incremental improvement compared to the V1 to V2 transition. First, we’ll review how YOLO works by explaining V1, following with V2 and V3, the main changes will be noted instead. Once the comparative review is covered, we’ll finish by briefly reviewing V3 with other one-stage methods as well as two-stage method performance. 
+
+YOLO Version 1 (V1)
+V1 is a CNN which divides an input into a s*s grid, with each grid cell only predicting one object. Each cell predicts a specific number of boundary boxes. Due to the limit of one object per cell, V1 struggles with generalization in that it can only deal with objects that are a certain distance separated from each other. Each bounding box has one confidence score, and there are n conditional class probabilities per bounding box. Each box contains 5 elements (x, y, w, h, confidence score). Here the confidence score equals the likelihood that a box contains an object a.k.a the objectness, and the accuracy of the bounding box (classification and localization). The bounding box is normalized. And the x, y are offsets of the previous cell. Below is a breakdown of some of the terms:
+
+-	Box confidence score = Probability of existing object  * IoU
+-	Conditional Class Probability = Probability of a class given the probability of an existing object.
+-	Class confidence score = probability of class * IoU
+-	IoU = intersection over union b/w predicted box and the ground truth. 
+-	IoU = Area of overlap / Area of union
+
+The loss function selects the bounding box with the highest IoU as the ground truth then uses SSE between predictions and the ground truth to minimize loss. Below is a breakdown of the loss function:
+
+-	Classification loss
+-	Localization loss (Errors between the predicted boundary box and ground truth)
+-	Confidence loss (Objectness of the box)
+
+The final loss equals the classification loss plus the localization loss plus the confidence loss.
+Non-maximal suppression is added to V1 due to the fact that the model may make duplicate detections. Non-maximal suppression removes the duplicates by separating out the bounding boxes with the lower confidence scores. 
+
+
+YOLO Version 2 (V2)
+
+V2 had a handful of significant changes. Batch normalization was added, which normalizes the activation functions on a per batch basis. The input size increased from 224*224 to 448*448, allowing for higher resolution. Anchor boxes were added in addition to the existing use of boundary boxes. Anchor boxes are set ratios of bounding boxes that have been found to be commonly occuring. This allows the model to focus on a few commonly found areas instead of picking arbitrary sizes.  Class prediction moved from the grid cells to the bounding boxes. Dimension clusters are used which run k-means to find the centroids of top-k clusters. Here the model utilizes IoUs to measure the distance between points. What is known as the passthrough which is a set of convolution layers that decrease the spatial dimension gradually. V2 reshapes a 26*26*512 layer to 13*13*2048, and concatenates this with the 13*13*1024 output layer. The model also conducts multi-scale training which is the removal of the 2 fully connected layers. This allows for different sized images to be used. Below is a chart that shows V1 features with the added V2 mAP scores.
+
+YOLO								YOLOv2
+batch norm? 				X	X   	X   	X  	X   	X   	X  	X
+hi-res classifier? 	      			X   	X   	X   	X   	X   	X   	X
+convolutional? 	           				X  	X   	X   	X  	X   	X
+anchor boxes? 	      				X   	X
+new network? 							X 	X 	X 	X 	X
+dimension priors? 							X 	X 	X 	X
+location prediction? 							X	X 	X 	X
+passthrough? 									X 	X 	X
+multi-scale? 										X	X
+hi-res detector? 										X
+VOC2007 		mAP 	63.4   	65.8   	69.5  	69.2   	69.6   	74.4  	75.4   	76.8   	78.6
+
+
+YOLO Version 3 (V3)
+
+Multi-Label Classification was added. For example the output label may be a pedestrian ‘and’ a man. The softmax function was replaced with logistic classifiers. V3 uses binary cross-entropy loss for each label. The objectness is found using a logistic regression. V3 unrelated to the name, makes 3 predictions per location based on different scales. V3 uses Darknet-53 instead of Darknet-19. It’s not as great on the COCO average AP between .5 and .95 IOU metric. But it’s very good on the old detection metric of .5 IOU. Here are a few metrics on ImageNet using different backbones:
+
+Backbone 		Top-1 	Top-5 	Bn Ops		BFLOP/s 	FPS 
+Darknet-19 [15] 	74.1 	91.8 	7.29 		1246 		171 
+ResNet-101[5] 	77.1 	93.7 	19.7 			1039	 	53 
+ResNet-152 [5] 	77.6 	93.8 	29.4 		1090	 	37 
+Darknet-53 		77.2 	93.8 	18.7 		1457 	 	78
+
+
+One-stage and Two-stage methods
+
+Object detection methods include two general frameworks, one-stage methods and two-stage methods. Two-stage methods have an added step of conducting a region proposal as compared to a break down of the input into grid cells. This essentially allows us to have a real-time object detector. Below we can see a comparison of V3 vs V2, as well as other one-stage methods and two-stage methods. 
+
+Backbone 			AP 	AP50 	AP75	 APS 	APM 	APL
+Two-stage methods 
+Faster R-CNN+++ [5] 		ResNet-101-C4 		34.9 	55.7 	37.4 	15.6 	38.7 	50.9 
+Faster R-CNN w FPN [8] 	ResNet-101-FPN 		36.2 	59.1 	39.0 	18.2 3	9.0 	48.2 
+Faster R-CNN by G-RMI [6]	Inception-ResNet-v2 [21] 	34.7 	55.5 	36.7 	13.5 	38.1 	52.0 
+Faster R-CNN w TDM [20] 	Inception-ResNet-v2-TDM 	36.8	 57.7 	39.2 	16.2 	39.8 	52.1 
+One-stage methods 
+YOLOv2 [15] 			DarkNet-19 [15] 		21.6	44.0 	19.2 	5.0 	22.4 	35.5 
+SSD513 [11, 3] 		ResNet-101-SSD 		31.2 	50.4 	33.3 	10.2 	34.5 	49.8 
+DSSD513 [3] 			ResNet-101-DSSD 		33.2 	53.3 	35.2 	13.0 	35.4 	51.1 
+RetinaNet [9]			ResNet-101-FPN 		39.1 	59.1 	42.3 	21.8 	42.7 	50.2 
+RetinaNet [9] 			ResNeXt-101-FPN 		40.8 	61.1 	44.1 	24.1 	44.2 	51.2 
+YOLOv3 608×608		Darknet-53 			33.0 	57.9 	34.4 	18.3 	35.4 	41.9
+
+We can see that the V3 is better than SSD and similar to DSSD. APS is fairly good. APM and APL aren’t as good. V3 has better APS than two-stage Faster R-CNNs.
+
+Metric definitions:
+AP:      Average Precision
+AP50: Average Precision @ IoU = .5
+AP75: Average Precision @ IoU = .5
+APS:   Average Precision Small
+APM:  Average Precision Medium
+APL:   Average Precision Large
+
+In conclusion, current companies such as Google and Facebook are doing a lot of research in object detection, with the other main constituent being the military. As these models become more used in applications, the need for discourse becomes more relevant. 
+
+V1: https://arxiv.org/abs/1506.02640
+V2: https://arxiv.org/abs/1612.08242
+V3: https://arxiv.org/abs/1804.02767
+Charts: https://arxiv.org/abs/1708.02002

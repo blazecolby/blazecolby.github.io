@@ -1,0 +1,168 @@
+Technology history of vision algorithms and state of the art results. 
+
+Intro
+Before 2012 may be considered the old era of computer vision algorithms. In this era, computer vision was more so bags of features and handcrafted ensembles. After the beginning of the new era, neural networks have become the new normal. Two central projects have been created to track the progress of computer vision over the past few decades; PASCAL VOC and ImageNet. PASCAL VOC is a competition for image classification and object detection. The data set contains 27k images with 20 classes. After 2010 the attention shifted over to ImageNet, which has progressed through different data sets as milestones have been met. They’re competition started with image classification, then added on fine-grained image classification, image segmentation, object detection, video object detection, and more. Their most recent competition was held in 2017. They have spent the past few years focusing on efforts to clean their dataset as to avoid any bias, i.e. imbalanced classes such as men vs women. They are tentatively planning on starting a 3d image classification competition. 
+
+More on the old era.
+
+1959, two neurophysiologists, David Hubel and Torsten Wiesel, published [13]‘Receptive fields of single neurons in the cat’s striate cortex.’ Placed electrodes into the primary visual cortex area of an anesthetized cat’s brain. Found by accident that one neuron fired as they were slipping a new slide into the projector. The neuron was excited by the movement of the line created by the shadow of the sharp edge of the glass slide. They established that there are simple and complex neurons in the primary visual cortex and that visual processing starts with simple structures such as edges. The same year, Russell Kirsch and his colleagues developed an apparatus that allowed transforming images into grids of numbers, a.k.a. The digital image scanner. One of the first images was of Russell's son. 
+1963, Lawrence Robert wrote his Ph.D. thesis, ‘Machine perception of three-dimensional solids.’ He described the process of deriving 3D info from 2D photos. He reduced the world to geometric shapes. The goal was to process 2D photos into line drawings, then build 3D representations from those lines, then display 3D structures with the hidden lines removed. 
+In the 1960s, Seymour Papert, a professor at MIT’s AI lab, launched the [14]Summer Vision Project, to solve the machine vision problem. Goal was to develop a significant part of a visual system in one summer, i.e. background and foreground segmentation and extract non-overlapping objects from real world images. This was considered the official birth of CV as a scientific field. 
+1982, David Marr, a British neuroscientist, published ‘Vision: A computational investigation into the human representation and processing of visual information.’ Gave more insight that vision is hierarchical. Argued that the visions main function is to create 3D representations of the environment so we can interact with it. Put in writing a framework for vision, i.e. where low-level algorithms that detect edges, curves, etc and are used as stepping stones towards a high-level understanding of visual data. 
+Close to the same time, Japanese computer scientist, Kunihiko Fukushima, built a [15]self-organizing artificial network of simple and complex cells that recognized patterns unaffected by position shifts. The network was called Neocognitron. Convolutional layers where receptive fields had weight vectors, known as filters. Filters slide across pixels, perform calculations, produce activation events, that are then the inputs for following layers. 
+ 1989, a French scientist Yann LeCun used a backprop style learning algorithm to Fukushima’s CNN. Shortly released [16]LeNet-5. Also released a related commercial product, [17]Reading Handwritten Digits: A Zip Code Recognition System. His work also led to the creation of MNIST. 
+	1997, Berkeley professor, Jitendra Malik published a paper that describes perceptual grouping, i.e. group images into sensible parts using graph theory algorithm. A more recent example would be superpixels.
+	1999, changed focus towards feature-based object recognition. David Lowe released, [18]‘Object Recognition from Local Scale-Invariant Features.’ Uses local features not effected by rotation, etc. These features are somewhat similar to neurons found in the inferior temporal cortex used in object detection. 
+	2001, Paul Viola and Michael Jones, released a real-time face detection app. This is a binary classifier built on several weak classifiers. Model breaks input images into patches and submits them to weak detectors. If a patch makes it through every stage it is positive, else the algorithm is rejected. 5 years after the paper, Fujitsu released a camera with a real-time face detection feature based on this. 
+	2006, Pascal VOC project was launched. It provided a standardardized dataset for object classification. Annual competition was held from 2006-2012. 
+	2009, ‘A Discriminatively Trained, Multiscale, Deformable Part Model’ was published. Decomposed objects into collections of parts based on pictorial models, applied a set of geometric constraints, and modeled potential object centers, which were used as latent variables. 
+	2010, ImageNet Large Scale Visual Recognition Competition (ILSVRC) started. Runs competitions along with post-competition workshops covering what was learning from the presented ideas. Contains over a million images, cleaned, with 1k classes. 
+	2012, University of Toronto entered a CNN known as AlexNet, with an error rate of 16.4%. Thereafter rates fell to a few percentage points. And various CNNs with improvements have been applied. 
+
+More on the new era.
+
+Roadmap of popular algorithms that were made so, typically due to a mix of a novel architecture and improved results. 
+
+AlexNet 2012
+-	ILSVRC
+-	 2012 winner by a large margin from 25% to 16%
+-	Proved effectiveness of CNNs and kicked off a new era
+-	8 layers, 650k neurons, 60kk parameters
+ZFNet 2013
+-	ILSVRC 2013 winner with a best top-5 error of 11.6%
+-	AlexNet but  using smaller 7x7  kernels to keep more information deeper layers
+OverFeat 2013
+-	ILSVRC 2013 localization winner
+-	Uses AlexNet on multi-scale input images with sliding window approach
+-	Accumulates bounding boxes for final detection (instead of non-max suppression)
+RCNN (Region based CNN) 2013
+-	2k proposals generated by selective search
+-	SVM trained for classification
+-	Multi-stage pipeline
+MultiBox 2014
+-	Not a recognition network
+-	A region proposal network
+-	Popularized prior/anchor boxes (found through clustering) to predict offsets
+-	Much better strategy than starting the predictions with random coordinates
+-	Since then heuristic approaches have been gradually fading out and replaced
+InceptionNet (GoogleNet) 2014
+-	ILSVRC 2014 winner
+-	Stack up inception modules
+-	22 layers, 5kk parameters
+VGGNet 2015
+-	Not a winner but famous due to simplicity and effectiveness
+-	Replace large-kernel convolutions by stacking several small-kernel convolutions
+Fast RCNN 2015
+-	Jointly learns regino proposal and detection
+-	Employes a region of interest (RoI) that allows us to reuse the computations.
+YOLO (you only look once) 2015
+-	Directly predicts all objects and classes in one shot
+-	Very fast
+-	Processes images at ~40 FPS on a Titan X GPU
+-	First real-time state-of-the-art detector
+-	Divides input images into multiple grid cells which are then classified. 
+ResNet (Microsoft) 2015
+-	ILSVRC 2015 winner with a 3.6% error rate (human performance is 5-10%)
+-	Employs residual blocks which allows to build deep networks (hundreds of layers)
+-	Additional identity mapping
+Faster RCNN 2015
+-	Fast RCNN with heuristic region proposal replaced by region proposal network RPN inspired by MultiBox
+-	RPN shares full-image convolutional features with the detection network (cost free region proposal)
+-	RPN uses attention mechanism to tell where to look
+-	~FPS on a Titan K40 GPU
+-	End-to-end training
+SSD (single shot multibox detector) 2015
+-	SSD leverages the Faster RCNN’s RPN to directly classify objects inside each prior box( similar to YOLO)
+-	Predicts category scores and box off=sets for a fixed set of default bounding boxes
+-	Fixes the predefined grid cells used in YOLO by using multiple aspect ratios
+-	Produces predictions of different scales
+-	~59 FPS
+SqueezeNet 2016
+-	Focus on smaller DNNs
+-	Focus on model compression techniques
+DenseNet 2016
+-	Connects each layer in every other layer in feed forward fashion
+-	Alleviates vanishing gradient problem.
+Mask R-CNN 2017
+-	Object instance segmentation
+DeepLabV3 2017
+-	Semantic image segmentation
+BigGans 2018
+-	Large Scale GAN Training for High Fidelity Natural Image Synthesis
+EfficientNet 2019
+-	scaling method that uniformly scales all dimensions of depth/width/resolution using a simple yet highly effective compound coefficients.
+
+Modern History Computer Vision Sotas
+
+ImageNet
+
+
+Classification
+	Team Name	Top_1	Description
+2010	NEC-UIUC	0.28191	(SIFT) + SVM
+2011	XRCE	0.25770	Compressed Fisher vectors 
+2012	SuperVision	0.16422	AlexNet
+2013	Clarifai	0.11743	Based on the deconvolutional networks of Zeiler et. al, "Adaptive Deconvolutional Networks for Mid and High Level Feature Learning"
+2014	GoogLeNet	0.06656	CNN combines the multi-scale with intuitions gained from the Hebbian principle.
+2015	MSRA	0.03567	SPP-net
+2016	Trimps-Soushen	0.02991	Based on image classification models like Inception, Inception-Resnet, ResNet and Wide Residual Network (WRN), we predict the class labels of the image. Then we refer to the framework of "Faster R-CNN" to predict bounding boxes based on the labels. Results from multiple models are fused in different ways, using the model accuracy as weights.
+2017	WMW	0.02251	Squeeze-and-Excitation (SE)
+
+
+Localization
+	Team Name	Top_1
+2012	Supervision	0.335463
+2013	Clarifai	0.11743
+2014	VGG	0.253231
+2015	MSRA	0.090178
+2016	Trimps-Soushen		0.077087
+2017	CLS-LOC	0.062263
+
+
+
+
+
+
+
+Detection
+	Team Name	Mean Average Precision	# Object categories won
+2013	UvA-Euvision		0.22581	
+2014	NUS	0.37212	106
+2015	MSRA	0.620741	194
+2016	CUImage	0.662751	109
+2017	BDAT	0.732227		65
+
+
+
+
+Detection/Video
+	Team Name	Mean Average Precision	# Object Categories won
+2016	NUIST	0.808292		10
+2017	IC & USYD		0.818309	4
+
+COCO - Tensorflow
+
+Detection
+	Model	Speed (ms)	Mean Average Precision
+	Faster RCNN NAS	1833	43
+	SSD Mobilenet V1 PPN	26	20
+
+
+
+
+
+
+
+
+
+
+
+A few sources.
+
+https://www.slideshare.net/inovex/computer-vision-from-traditional-approaches-to-deep-neural-networks
+
+https://hackernoon.com/a-brief-history-of-computer-vision-and-convolutional-neural-networks-8fe8aacc79f3
+
+http://www.image-net.org/
+
+https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
